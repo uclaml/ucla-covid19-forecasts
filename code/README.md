@@ -1,5 +1,5 @@
 
-##SuEIR model for forecasting confirmed cases, deaths, and hospitaliztions at nation, state, and county levels.
+## SuEIR model for forecasting confirmed cases, deaths, and hospitaliztions at nation, state, and county levels.
 
 ### How to get forecast results of confirmed cases, deaths at different levels?
 
