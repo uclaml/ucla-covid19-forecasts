@@ -17,9 +17,14 @@ python generate_predictions.py --END_DATE 2020-07-07 --VAL_END_DATE 2020-07-14 -
 
 ### Arguments:
 *```END_DATE```: end date for training data
+
 *```VAL_END_DATE```: end date for validation data
+
 *```level```: can be state, nation, or county
+
 *```state```: validation for one specific state (```level``` should be set as state)
+
 *```nation```: validation for one specific country (```level``` should be set as nation)
+
 *```dataset```: select which data source to use (can be NYtimes and JHU)
 
