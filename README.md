@@ -1,5 +1,5 @@
 
-# Projections and code of the SuEIR model for forecasting the COVID-19 related confirmed cases, deaths, and hospitaliztions.
+# SuEIR model for forecasting the COVID-19 related confirmed cases, deaths, and hospitaliztions.
 
 ## What is the SuEIR model.
 
