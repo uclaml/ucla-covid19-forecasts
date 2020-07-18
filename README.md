@@ -9,7 +9,7 @@ The SuEIR (see the figure below) model is an epidemic model for forecasting the 
     <img src="image/sueir.pdf" width="450"\>
 </p>
 <p align="center">
-<b>Illustration of the SuEIR model.
+Illustration of the SuEIR model.
 </p>
 
 
@@ -24,7 +24,7 @@ In addition to forecasting the numbers of confirmed cases and deaths, the SuEIR+
 </p>
 
 ## Projection results
-We include all history projections (confirmed cases, deaths, and hospitalizations) in the folder ```prejection_result/```. We also visualize our forecasts at county, state, and nation levels in our website [covid19.uclaml.org](https://covid19.uclaml.org/).
+We include all history projections (confirmed cases, deaths, and hospitalizations) in the folder ```projection_result/```, which are updated on a weekly basis. We also visualize our forecasts at county, state, and nation levels in our website [covid19.uclaml.org](https://covid19.uclaml.org/).
 
 ## Reference
 For more technical details, please refer to our [manuscript](https://www.medrxiv.org/content/10.1101/2020.05.24.20111989v1.full.pdf).
