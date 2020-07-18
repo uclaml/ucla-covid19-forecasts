@@ -1,7 +1,7 @@
 
 # SuEIR model for forecasting the COVID-19 related confirmed cases, deaths, and hospitaliztions.
 
-## What is the SuEIR model.
+## What is the SuEIR model?
 
 The SuEIR (see the figure below) model is an epidemic model for forecasting the active cases and deaths of COVID-19 by considering the unreported cases. The critical feature of SuEIR is the new compartment called "Unreported". Specifically,  we  treat  the  "Exposed"  group  in SEIR as the individuals that have already been infected  but  not  been tested,  who  are  also  capable  of infecting  others. Some of the people in the "Exposed" group will be tested and transferred to the "Infectious" group (which  are  reported  to  the  public), while  the  rest  will  recover/die  and  transit  to  the   "Unreported"  group that  are not reported to the public due to testing capacity, asymptomatic infection,  quick recovering, etc.
 
