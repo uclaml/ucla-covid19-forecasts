@@ -12,7 +12,7 @@ Step 2: Generate prediction results by running ```generate_predictions.py```, e.
 ```python
 python generate_predictions.py --END_DATE 2020-07-07 --VAL_END_DATE 2020-07-14 --dataset NYtimes --level state
 ```
-(before runing ```generate_predictions.py```, one should make sure the corresponding validation file, i.e., with the same ```END_DATE```, ```VAL_END_DATE```, ```dataset```, and ```level```, has already be generated)
+Before runing ```generate_predictions.py```, one should make sure the corresponding validation file, i.e., with the same ```END_DATE```, ```VAL_END_DATE```, ```dataset```, and ```level```, has already be generated.
 
 
 ### Arguments:
@@ -20,11 +20,11 @@ python generate_predictions.py --END_DATE 2020-07-07 --VAL_END_DATE 2020-07-14 -
 
 *```VAL_END_DATE```: end date for validation data
 
-*```level```: can be state, nation, or county
+*```level```: can be state, nation, or county, default: state
 
-*```state```: validation for one specific state (```level``` should be set as state)
+*```state```: validation/prediction for one specific state (```level``` should be set as state), default: all states in the US 
 
-*```nation```: validation for one specific country (```level``` should be set as nation)
+*```nation```: validation/prediction for one specific country (```level``` should be set as nation), default: 26 countries in the world
 
-*```dataset```: select which data source to use (can be NYtimes and JHU)
+*```dataset```: select which data source to use (can be NYtimes and JHU), default: NYtimes data
 
