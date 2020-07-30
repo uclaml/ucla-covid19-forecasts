@@ -28,3 +28,5 @@ Before runing ```generate_predictions.py```, one should make sure the correspond
 
 *```dataset```: select which data source to use (can be NYtimes and JHU), default: NYtimes data
 
+### Notice:
+We consider two-stage training (sequentially training over two periods of data, determined by the ```mid_date``` variable determined in the code) for validation and generating predictions. Additionlly, the end date of training data ```END_DATE``` should guarantee that the length of the second period of data should be greater than 21, i.e., the length between ```mid_date``` and ```END_DATE``` should be greater than 21. For example, currently the ```mid_date``` for CA is 2020-06-07, then the ```END_DATE``` should be set at least after 2020-06-28.
