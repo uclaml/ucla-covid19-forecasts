@@ -23,7 +23,7 @@ class xxx(Model):
 
 
 class Learner_SuEIR(Model):
-    def __init__(self, N, E_0, I_0, R_0, a, decay, bias=0):
+    def __init__(self, N, E_0, I_0, R_0, a, decay, bias=0.005):
         self.N = N
         self.E_0 = E_0
         self.I_0 = I_0
@@ -31,9 +31,14 @@ class Learner_SuEIR(Model):
         self.a = a
         self.decay = decay
         self.FRratio = a * \
-            np.minimum(np.exp(-decay * (np.arange(1000) + bias)), 1)+0.005
+            np.minimum(np.exp(-decay * (np.arange(1000) + 0)), 1)+bias
         self.pop_in = 0
         self.pop = N*5
+        self.bias=1000000
+
+        self.initial_N = N
+        self.initial_pop_in = self.pop_in
+        self.initial_bias=1000000
 
     def __call__(self, size, params, init, lag=0):
 
@@ -41,7 +46,8 @@ class Learner_SuEIR(Model):
 
         def calc_grad(t, y):
             S, E, I, _ = y
-            return [self.pop_in*(self.pop-self.N)-beta*S*(E+I)/self.N, beta*S*(E+I)/self.N-sigma*E, mu*E-gamma*I, gamma*I]
+            new_pop_in = self.pop_in*(self.pop-self.N)*np.exp(-0.03*np.maximum(0, t-self.bias))
+            return [new_pop_in-beta*S*(E+I)/self.N, beta*S*(E+I)/self.N-sigma*E, mu*E-gamma*I, gamma*I]
 
         solution = solve_ivp(
             calc_grad, [0, size], init, t_eval=np.arange(0, size, 1))
@@ -65,6 +71,10 @@ class Learner_SuEIR(Model):
         # return pred_S, pred_E, pred_I, pred_R, pred_confirm, pred_fatality
         return solution.y[0], solution.y[1], solution.y[2], solution.y[3], solution.y[2] + solution.y[3], temp_F
 
+    def reset(self):
+        self.N = self.initial_N
+        self.pop_in = self.initial_pop_in
+        self.bias = self.initial_bias
 
 
 

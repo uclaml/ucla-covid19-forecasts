@@ -6,7 +6,7 @@ import math
 
 
 def get_JHU(level):
-    length = 150
+    length = 180
 
     if level=="nation":
         df_confirm = pd.read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")
