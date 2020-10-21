@@ -46,7 +46,7 @@ class Learner_SuEIR(Model):
 
         def calc_grad(t, y):
             S, E, I, _ = y
-            new_pop_in = self.pop_in*(self.pop-self.N)*np.exp(-0.03*np.maximum(0, t-self.bias))
+            new_pop_in = self.pop_in*(self.pop-self.N)*(np.exp(-0.03*np.maximum(0, t-self.bias))+0.05)
             return [new_pop_in-beta*S*(E+I)/self.N, beta*S*(E+I)/self.N-sigma*E, mu*E-gamma*I, gamma*I]
 
         solution = solve_ivp(

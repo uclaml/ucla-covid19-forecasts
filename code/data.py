@@ -50,6 +50,7 @@ class NYTimes(Data):
         return date[0], date[-1]
 
     def get(self, start_date, end_date, state, county=None):
+
         assert self.level == 'states' or county is not None, 'select a county for level=counties'
         state_table = self.table[self.table['state']
                                  == us.states.lookup(state).name]

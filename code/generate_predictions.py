@@ -6,7 +6,7 @@ import us
 
 from model import *
 from data import *
-from rolling_train import *
+from rolling_train_modified import *
 from util import *
 from datetime import timedelta, datetime
 
@@ -23,6 +23,8 @@ parser.add_argument('--nation', default = "default",
                     help='nation')
 parser.add_argument('--dataset', default = "NYtimes",
                     help='nytimes')
+parser.add_argument('--popin', type=float, default = 0,
+                    help='popin')
 args = parser.parse_args()
 PRED_START_DATE = args.VAL_END_DATE
 
@@ -37,14 +39,14 @@ START_nation = {"Brazil": "2020-03-30", "Canada": "2020-03-28", "Mexico": "2020-
 
 
 FR_nation = {"Brazil": [0.2,0.02], "Canada": [0.1,0.015], "Mexico": [0.35, 0.015], 
- "India": [0.20, 0.02], "Turkey": [1, 0.04], "Russia": [0.1, 0.022], "Saudi Arabia": [0.2, 0.035], "US": [0.75, 0.024], \
+ "India": [0.20, 0.02], "Turkey": [1, 0.04], "Russia": [0.1, 0.022], "Saudi Arabia": [0.2, 0.035], "US": [0.75, 0.02], \
  "United Arab Emirates": [0.07, 0.04], "Qatar": [0.02, 0.05], "France": [0.25, 0.015], "Spain": [0.4, 0.03], \
- "Indonesia": [0.5, 0.024], "Peru": [0.1, 0.013], "Chile": [0.08, 0.025], "Pakistan": [0.16, 0.025], "Germany":[0.05, 0.001], "Italy":[0.35, 0.02], \
+ "Indonesia": [0.5, 0.024], "Peru": [0.1, 0.013], "Chile": [0.08, 0.025], "Pakistan": [0.16, 0.025], "Germany":[0.05, 0.01], "Italy":[0.35, 0.02], \
  "South Africa": [0.1, 0.026], "Sweden": [0.5, 0.028], "United Kingdom": [0.5, 0.028], "Colombia": [0.17, 0.01], "Argentina": [0.1, 0.012], "Bolivia": [0.2, 0.015], \
- "Ecuador": [0.5, 0.015], "Iran": [0.2, 0.015]}
+ "Ecuador": [0.5, 0.015], "Iran": [0.5, 0.02]}
 
 decay_state = {"Pennsylvania": [0.7, 0.024], "New York": [0.7, 0.042], "Illinois": [0.7, 0.035], "California": [0.5,0.016], "Massachusetts": [0.7,0.026], "New Jersey": [0.7,0.03], \
-"Michigan": [0.8,0.035], "Virginia": [0.7,0.034], "Maryland": [0.7,0.024], "Washington": [0.7,0.036], "North Carolina": [0.7,0.018], "Wisconsin": [0.7,0.034], "Texas": [0.6,0.016], \
+"Michigan": [0.8,0.035], "Virginia": [0.7,0.034], "Maryland": [0.7,0.024], "Washington": [0.7,0.036], "North Carolina": [0.7,0.018], "Wisconsin": [0.7,0.034], "Texas": [0.3,0.016], \
 "New Mexico": [0.7,0.02], "Louisiana": [0.4,0.02], "Arkansas": [0.7,0.02], "Delaware": [0.7,0.03], "Georgia": [0.7,0.015], "Arizona": [0.7,0.02], "Connecticut": [0.7,0.026], "Ohio": [0.7,0.024], \
 "Kentucky": [0.7,0.023], "Kansas": [0.7,0.02], "New Hampshire": [0.7,0.014], "Alabama": [0.7,0.024], "Indiana": [0.7,0.03], "South Carolina": [0.7,0.02], "Colorado": [0.7,0.02], "Florida": [0.4,0.016], \
 "West Virginia": [0.7,0.022], "Oklahoma": [0.7,0.03], "Mississippi": [0.7,0.026], "Missouri": [0.7,0.02], "Utah": [0.7,0.018], "Alaska": [0.7,0.04], "Hawaii": [0.7,0.04], "Wyoming": [0.7,0.04], "Maine": [0.7,0.025], \
@@ -64,12 +66,12 @@ mid_dates_county = {"San Joaquin": "2020-05-26", "Contra Costa": "2020-06-02", "
  "Los Angeles": "2020-06-05", "Santa Clara": "2020-05-29", "Orange": "2020-06-12", "Riverside": "2020-05-26", "San Diego": "2020-06-02" \
  
 }
-mid_dates_nation = {"US": "2020-06-08", "Mexico": "2020-06-05", "India": "2020-06-05", "South Africa": "2020-06-01", "Iran": "2020-05-03", "Bolivia": "2020-05-25"
+mid_dates_nation = {"US": "2020-06-28", "Mexico": "2020-07-05", "India": "2020-07-30", "South Africa": "2020-06-01", "Brazil": "2020-07-20", \
+ "Iran": "2020-05-03", "Bolivia": "2020-05-25", "Indonesia": "2020-07-01", "Italy": "2020-07-01", "Canada": "2020-08-15", "Russia": "2020-08-01", \
+ "United Kindom": "2020-07-08", "Spain": "2020-06-28", "France": "2020-06-28", "Argentina": "2020-08-01", "United Kindom": "2020-07-20" 
 }
 
 north_cal = ["Santa Clara", "San Mateo", "Alameda", "Contra Costa", "Sacramento", "San Joaquin", "Fresno"]
-
-
 
 def get_county_list(cc_limit=200, pop_limit=50000):
     non_county_list = ["Puerto Rico", "American Samoa", "Guam", "Northern Mariana Islands", "Virgin Islands"]
@@ -99,7 +101,8 @@ if args.level == "state":
     pred_dir = "pred_results_state/"
     if not args.state == "default":
         region_list = [args.state]
-        region_list = ["New York", "California", "New Jersey", "Illinois", "Florida", "Texas", "Georgia", "Arizona"]
+        # region_list = ["New York", "California", "New Jersey", "Illinois", "Florida", "Texas", "Georgia", "Arizona"]
+        region_list = ["New York", "California"]
         val_dir = "val_results_state/test"
 
 elif args.level == "county":
@@ -153,7 +156,7 @@ for region in region_list:
         # json_file_name = "val_results_state/" + args.dataset + "_val_params_best_END_DATE_" + args.END_DATE + "_VAL_END_DATE_" + args.VAL_END_DATE
         # with open(json_file_name, 'r') as f:           
         #     NE0_region = json.load(f)
-        pop_in = 1/200
+        pop_in = 1/400
         # will rewrite it using json
         
     elif args.level == "county":
@@ -174,6 +177,8 @@ for region in region_list:
 
         train_data = [data.get(start_date, second_start_date, state, county), data.get(second_start_date, args.END_DATE, state, county)]
         full_data = [data.get(start_date, second_start_date, state, county), data.get(second_start_date, PRED_START_DATE, state, county)]
+
+
         if state in decay_state.keys():
             a, decay = decay_state[state][0], decay_state[state][1]
         else:
@@ -196,8 +201,15 @@ for region in region_list:
             second_start_date = "2020-06-12"
             reopen_flag = False
         start_date = START_nation[nation]
+
         train_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, args.END_DATE, nation)]
         full_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, PRED_START_DATE, nation)]
+
+        if nation=="US":
+            train_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, "2020-09-10", nation), data.get("2020-09-10", args.END_DATE, nation)]
+            full_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, "2020-09-10", nation), data.get("2020-09-10", PRED_START_DATE, nation)]
+
+
         a, decay = FR_nation[nation] 
         pop_in = 1/400 if nation == "US" else 1/300
 
@@ -220,11 +232,17 @@ for region in region_list:
             else:
                 pop_in = 1/1000
         if args.level=="state" and reopen_flag and (np.mean(daily_confirm[-7:])<12.5 or mean_increase<1.1):
-            pop_in = 1/400
-        if args.level == "nation" and (region == "France" or region == "Spain" or region == "Germany" or region == "Italy"):
+            pop_in = 1/500
+        if args.level == "nation" and (region == "Germany" or region == "Italy" or region=="Canada"):
             pop_in = 1/5000
         if not args.level == "nation" and (state == "New York" or state == "New Jersey"):
             pop_in = 1/5000
+        if args.level == "nation" and (region == "Iran"):
+            pop_in = 1/1000  
+        if args.level == "nation" and (region == "US"):
+            pop_in = 1/400
+        if args.popin >0:
+            pop_in = args.popin
     print("region: ", region, " start date: ", start_date, " mid date: ", second_start_date,
         " end date: ", args.END_DATE, " Validation end date: ", args.VAL_END_DATE, "mean increase: ", mean_increase, pop_in )   
     N, E_0 = NE0_region[region][0], NE0_region[region][1]
@@ -232,22 +250,24 @@ for region in region_list:
     new_sus = 0 if reopen_flag else 0
     if args.level == "state" or args.level == "county":
         bias = 0.025 if reopen_flag or (state=="Louisiana" or state=="Washington" or state == "North Carolina" or state == "Mississippi") else 0.005
-        if state == "Arizona" or state == "Alabama" or state == "Florida" or state=="Indiana" or state=="Wisconsin" or state == "Hawaii" or state == "California" or state=="Texas":
+        if state == "Arizona" or state == "Alabama" or state == "Florida" or state=="Indiana" or state=="Wisconsin" or state == "Hawaii" or state == "California" or state=="Texas" or state=="Illinois":
             bias = 0.01
         if state == "Arkansas" or state == "Iowa" or state == "Minnesota" or state == "Louisiana" \
          or state == "Nevada" or state == "Kansas" or state=="Kentucky" or state == "Tennessee" or state == "West Virginia":
             bias = 0.05
-        if state == "Texas":
-            bias = 0.005
     if args.level == "nation":
         bias = 0.01 if reopen_flag else 0.01
+        if nation == "Germany":
+            bias = 0.001
+        if nation == "US":
+            bias = 0.015
 
     data_confirm, data_fatality = train_data[0][0], train_data[0][1]
     model = Learner_SuEIR(N=N, E_0=E_0, I_0=data_confirm[0], R_0=data_fatality[0], a=a, decay=decay, bias=bias)
     init = [N-E_0-data_confirm[0]-data_fatality[0], E_0, data_confirm[0], data_fatality[0]]
 
     params_all, loss_all = rolling_train(model, init, train_data, new_sus, pop_in=pop_in)
-
+    loss_true = [NE0_region[region][-2], NE0_region[region][-1]]
     
     pred_true = rolling_prediction(model, init, params_all, full_data, new_sus, pred_range=prediction_range, pop_in=pop_in, daily_smooth=True)
 
@@ -261,7 +281,7 @@ for region in region_list:
 
 
     print ("region: ", region, " training loss: ",  \
-        loss_all, " maximum death cases: ", int(pred_true[1][-1]), " maximum confirmed cases: ", int(pred_true[0][-1])) 
+        loss_all, loss_true," maximum death cases: ", int(pred_true[1][-1]), " maximum confirmed cases: ", int(pred_true[0][-1])) 
 
     _, loss_true = rolling_likelihood(model, init, params_all, train_data, new_sus, pop_in=pop_in)
     data_length = [len(data[0]) for data in train_data]
@@ -280,10 +300,12 @@ for region in region_list:
                 for sigma0 in sigma_list:
                     for mu0 in mu_list:
                         temp_param = [params_all[0]] + [np.asarray([beta0,gamma0,sigma0,mu0])]
+                        if len(params_all)==3:
+                            temp_param = [params_all[0]] + [params_all[0]] + [np.asarray([beta0,gamma0,sigma0,mu0])]
                         temp_pred=rolling_prediction(model, init, temp_param, full_data, new_sus, pred_range=prediction_range, pop_in=pop_in, daily_smooth=True)
 
                         _, loss = rolling_likelihood(model, init, temp_param, train_data, new_sus, pop_in=pop_in)
-                        if loss < (9.5/data_length[1]*2+loss_true): ###################### 95% tail probability of Chi square (4) distribution
+                        if loss < (9.5/data_length[1]*4+loss_true): ###################### 95% tail probability of Chi square (4) distribution
                             prediction_list += [temp_pred]
 
     A_inv, I_inv, R_inv = [],[],[]

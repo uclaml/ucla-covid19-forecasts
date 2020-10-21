@@ -56,7 +56,7 @@ def add_fluction(x, a=0.3, b=-0.5):
     return np.asarray(data_output)
 
 
-def write_val_to_json(params_allregion, write_file_name_all, write_file_name_best, limit=2e-5):
+def write_val_to_json(params_allregion, write_file_name_all, write_file_name_best, limit=.5e-5):
 
     dict_file = json.dumps(params_allregion)
     f = open(write_file_name_all,"w")
@@ -70,24 +70,27 @@ def write_val_to_json(params_allregion, write_file_name_all, write_file_name_bes
         min_val, min_ind = np.min(params[:,2]), np.argmin(params[:,2]) 
         good_inds = np.where(params[:,2]<min_val+limit)[0]
         params = params[good_inds,:]
-        pick_ind = 5 # 3: last confirm; 4: last death; 5: maximum daily
+        pick_ind = 3 # 3: last confirm; 4: last death; 5: maximum daily
         candidates = params[:,pick_ind].tolist()
+        print (min_val)
         if min_val>1000:
             best_ind = candidates.index(np.percentile(candidates,10,interpolation='nearest'))
         else:
-            best_ind = candidates.index(np.percentile(candidates,90,interpolation='nearest'))
+            best_ind = candidates.index(np.percentile(candidates,75,interpolation='nearest'))
         best_list = params[best_ind, :].tolist()
         params_allregion_best[_region] = best_list
         
-    total_confirm = 0           
+    total_confirm, total_death = 0, 0           
     for _region in params_allregion_best:
         print (_region, np.asarray(params_allregion_best[_region])[0:3], 
             " Last CC: ",  params_allregion_best[_region][3], 
-            " Last DC: ", params_allregion_best[_region][4])
+            " Last DC: ", params_allregion_best[_region][4],
+            " max daily CC: ", params_allregion_best[_region][5],)
         total_confirm += params_allregion_best[_region][3]
+        total_death += params_allregion_best[_region][4]
     dict_file = json.dumps(params_allregion_best)
 
-    print ("Total confirmed cases: ", total_confirm)
+    print ("Total confirmed cases: ", total_confirm, " Total deaths: ", total_death)
     f = open(write_file_name_best,"w")
     f.write(dict_file)
     f.close()
@@ -159,7 +162,7 @@ def get_county_list():
 
     return county_list
 
-def get_start_date(data, limit=50):
+def get_start_date(data, limit=10):
     ind = np.where(data[0]>limit)[0]
     if len(ind)==0:
         START_DATE = "2020-06-01"

@@ -7,7 +7,7 @@ import us
 
 from model import *
 from data import *
-from rolling_train import *
+from rolling_train_modified import *
 from util import *
 from matplotlib import pyplot as plt
 
@@ -40,9 +40,9 @@ START_nation = {"Brazil": "2020-03-30", "Canada": "2020-03-28", "Mexico": "2020-
 
 
 FR_nation = {"Brazil": [0.2,0.02], "Canada": [0.1,0.015], "Mexico": [0.35, 0.015], 
- "India": [0.20, 0.02], "Turkey": [1, 0.04], "Russia": [0.1, 0.022], "Saudi Arabia": [0.2, 0.035], "US": [0.75, 0.024], \
+ "India": [0.20, 0.02], "Turkey": [1, 0.04], "Russia": [0.1, 0.022], "Saudi Arabia": [0.2, 0.035], "US": [0.75, 0.02], \
  "United Arab Emirates": [0.07, 0.04], "Qatar": [0.02, 0.05], "France": [0.25, 0.015], "Spain": [0.4, 0.03], \
- "Indonesia": [0.5, 0.024], "Peru": [0.1, 0.013], "Chile": [0.08, 0.025], "Pakistan": [0.16, 0.025], "Germany":[0.05, 0.001], "Italy":[0.35, 0.02], \
+ "Indonesia": [0.5, 0.024], "Peru": [0.1, 0.013], "Chile": [0.08, 0.025], "Pakistan": [0.16, 0.025], "Germany":[0.05, 0.01], "Italy":[0.35, 0.02], \
  "South Africa": [0.1, 0.026], "Sweden": [0.5, 0.028], "United Kingdom": [0.5, 0.028], "Colombia": [0.17, 0.01], "Argentina": [0.1, 0.012], "Bolivia": [0.2, 0.015], \
  "Ecuador": [0.5, 0.015], "Iran": [0.5, 0.02]}
 
@@ -67,7 +67,9 @@ mid_dates_county = {"San Joaquin": "2020-05-26", "Contra Costa": "2020-06-02", "
  "Los Angeles": "2020-06-05", "Santa Clara": "2020-05-29", "Orange": "2020-06-12", "Riverside": "2020-05-26", "San Diego": "2020-06-02" \
  
 }
-mid_dates_nation = {"US": "2020-06-08", "Mexico": "2020-06-05", "India": "2020-06-05", "South Africa": "2020-06-01", "Iran": "2020-05-03", "Bolivia": "2020-05-25"
+mid_dates_nation = {"US": "2020-06-28", "Mexico": "2020-07-05", "India": "2020-07-30", "South Africa": "2020-06-01", "Brazil": "2020-07-20", \
+ "Iran": "2020-05-03", "Bolivia": "2020-05-25", "Indonesia": "2020-07-01", "Italy": "2020-07-01", "Canada": "2020-08-15", "Russia": "2020-08-20", \
+ "United Kindom": "2020-07-08", "Spain": "2020-06-28", "France": "2020-06-28", "Argentina": "2020-08-01", "United Kindom": "2020-07-20" 
 }
 
 north_cal = ["Santa Clara", "San Mateo", "Alameda", "Contra Costa", "Sacramento", "San Joaquin", "Fresno"]
@@ -123,6 +125,7 @@ if __name__ == '__main__':
         if not args.state == "default":
             region_list = [args.state]  
             # region_list = ["New York", "California", "Illinois", "North Carolina", "Florida", "Texas", "Georgia", "Arizona", "South Carolina", "Alabama"]
+            # region_list = ["New York", "California"]
             write_dir = "val_results_state/test" + args.dataset + "_"       
         
     elif args.level == "county":
@@ -234,6 +237,10 @@ if __name__ == '__main__':
 
             start_date = START_nation[nation]
             train_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, args.END_DATE, nation)]
+            if nation=="US":
+                train_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, "2020-09-10", nation), data.get("2020-09-10", args.END_DATE, nation)]
+            full_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, "2020-09-10", nation), data.get("2020-09-10", args.END_DATE, nation)]
+
             val_data = data.get(args.END_DATE, args.VAL_END_DATE, nation)
             a, decay = FR_nation[nation]
             
@@ -255,14 +262,17 @@ if __name__ == '__main__':
                     pop_in = 1/1000
             if args.level=="state" and reopen_flag and (np.mean(daily_confirm[-7:])<12.5 or mean_increase<1.1):
                 pop_in = 1/500
-            if args.level == "nation" and (region == "France" or region == "Spain" or region == "Germany" or region == "Italy"):
+            if args.level == "nation" and (region == "Germany" or region == "Italy" or region=="Canada"):
                 pop_in = 1/5000
             if not args.level == "nation" and (state == "New York" or state == "New Jersey"):
                 pop_in = 1/5000
-            if not args.level == "nation" and (region == "Iran"):
+            if args.level == "nation" and (region == "Iran"):
                 pop_in = 1/1000  
+            if args.level == "nation" and (region == "US"):
+                pop_in = 1/400
             if args.popin >0:
                 pop_in = args.popin
+
         print("region: ", region, " start date: ", start_date, " mid date: ", second_start_date,
             " end date: ", args.END_DATE, " Validation end date: ", args.VAL_END_DATE, "mean increase: ", mean_increase, pop_in )    
 
@@ -295,15 +305,17 @@ if __name__ == '__main__':
                 new_sus = 0 if reopen_flag else 0
                 if args.level == "state" or args.level == "county":
                     bias = 0.025 if reopen_flag or (state=="Louisiana" or state=="Washington" or state == "North Carolina" or state == "Mississippi") else 0.005
-                    if state == "Arizona" or state == "Alabama" or state == "Florida" or state=="Indiana" or state=="Wisconsin" or state == "Hawaii" or state == "California" or state=="Texas":
+                    if state == "Arizona" or state == "Alabama" or state == "Florida" or state=="Indiana" or state=="Wisconsin" or state == "Hawaii" or state == "California" or state=="Texas" or state=="Illinois":
                         bias = 0.01
                     if state == "Arkansas" or state == "Iowa" or state == "Minnesota" or state == "Louisiana" \
                      or state == "Nevada" or state == "Kansas" or state=="Kentucky" or state == "Tennessee" or state == "West Virginia":
                         bias = 0.05
                 if args.level == "nation":
                     bias = 0.01 if reopen_flag else 0.01
-                    if nation == "Iran":
-                        bias = 0.005
+                    if nation == "Germany":
+                        bias = 0.001
+                    if nation == "US":
+                        bias = 0.015
                 data_confirm, data_fatality = train_data[0][0], train_data[0][1]
 
                 model = Learner_SuEIR(N=N, E_0=E_0, I_0=data_confirm[0], R_0=data_fatality[0], a=a, decay=decay, bias=bias)
