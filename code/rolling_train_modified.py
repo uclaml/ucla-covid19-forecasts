@@ -188,7 +188,7 @@ def rolling_prediction(model, init, params_all, train_data, new_sus, pred_range,
 
     temp_F_perday = np.diff(pred_fatality.copy())
     slope_temp_F_perday = np.diff(temp_F_perday)
-    smoothing_slope = 0 if np.max(fatality_perday[-7:])>3*np.median(fatality_perday[-7:]) or np.min(fatality_perday[-7:])<0 else 1
+    smoothing_slope = 0 if np.max(fatality_perday[-7:])>4*np.median(fatality_perday[-7:]) or np.median(fatality_perday[-7:])<0 else 1
     
     # print (smoothing)
 
