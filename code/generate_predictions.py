@@ -40,8 +40,8 @@ START_nation = {"Brazil": "2020-03-30", "Canada": "2020-03-28", "Mexico": "2020-
 
 FR_nation = {"Brazil": [0.2,0.02], "Canada": [0.1,0.015], "Mexico": [0.35, 0.015], 
  "India": [0.20, 0.02], "Turkey": [1, 0.04], "Russia": [0.1, 0.022], "Saudi Arabia": [0.2, 0.035], "US": [0.75, 0.02], \
- "United Arab Emirates": [0.07, 0.04], "Qatar": [0.02, 0.05], "France": [0.25, 0.015], "Spain": [0.4, 0.03], \
- "Indonesia": [0.5, 0.024], "Peru": [0.1, 0.013], "Chile": [0.08, 0.025], "Pakistan": [0.16, 0.025], "Germany":[0.05, 0.01], "Italy":[0.35, 0.02], \
+ "United Arab Emirates": [0.07, 0.04], "Qatar": [0.02, 0.05], "France": [0.25, 0.015], "Spain": [0.4, 0.02], \
+ "Indonesia": [0.5, 0.02], "Peru": [0.1, 0.013], "Chile": [0.08, 0.025], "Pakistan": [0.16, 0.025], "Germany":[0.05, 0.01], "Italy":[0.35, 0.02], \
  "South Africa": [0.1, 0.026], "Sweden": [0.5, 0.028], "United Kingdom": [0.5, 0.028], "Colombia": [0.17, 0.01], "Argentina": [0.1, 0.012], "Bolivia": [0.2, 0.015], \
  "Ecuador": [0.5, 0.015], "Iran": [0.5, 0.02]}
 
@@ -52,12 +52,15 @@ decay_state = {"Pennsylvania": [0.7, 0.024], "New York": [0.7, 0.042], "Illinois
 "West Virginia": [0.7,0.022], "Oklahoma": [0.7,0.03], "Mississippi": [0.7,0.026], "Missouri": [0.7,0.02], "Utah": [0.7,0.018], "Alaska": [0.7,0.04], "Hawaii": [0.7,0.04], "Wyoming": [0.7,0.04], "Maine": [0.7,0.025], \
 "District of Columbia": [0.7,0.024], "Tennessee": [0.7,0.027], "Idaho": [0.7,0.02], "Oregon": [0.7,0.036], "Rhode Island": [0.7,0.024], "Nevada": [0.5,0.022], "Iowa": [0.7,0.02], "Minnesota": [0.7,0.025], \
 "Nebraska": [0.7,0.02], "Montana": [0.5,0.02]}
-mid_dates_state = {"Alabama": "2020-06-03", "Arizona": "2020-05-28", "Arkansas": "2020-05-11", "California": "2020-05-30", "Georgia": "2020-06-05",
- "Nevada": "2020-06-01", "Oklahoma": "2020-05-31", "Oregon": "2020-05-29", "Texas": "2020-06-01", "Ohio": "2020-06-09",
-     "West Virginia": "2020-06-08", "Florida": "2020-06-01", "South Carolina": "2020-05-25", "Utah": "2020-05-28", "Iowa": "2020-06-20", "Idaho": "2020-06-15",
-     "Montana": "2020-05-15", "Minnesota": "2020-06-20"
-}
 
+mid_dates_state = {"Alabama": "2020-06-03", "Arizona": "2020-05-28", "Arkansas": "2020-05-11", "California": "2020-05-30", "Georgia": "2020-06-05",
+ "Nevada": "2020-06-01", "Oklahoma": "2020-05-31", "Oregon": "2020-05-29", "Texas": "2020-06-15", "Ohio": "2020-06-09",
+     "West Virginia": "2020-06-08", "Florida": "2020-06-01", "South Carolina": "2020-05-25", "Utah": "2020-05-28", "Iowa": "2020-06-20", "Idaho": "2020-06-15",
+     "Montana": "2020-06-15", "Minnesota": "2020-06-20", "Illinois": "2020-06-30", "New Jersey": "2020-06-30", "North Carolina": "2020-06-20" , "Maryland":  "2020-06-25",
+     "Kentucky": "2020-06-30", "Pennsylvania": "2020-07-01", "Colorado": "2020-06-20", "New York": "2020-06-30", "Alaska": "2020-06-30", "Washington": "2020-06-01"
+}
+mid_dates_state_resurge = {"Colorado": "2020-09-10", "California": "2020-09-30", "Florida": "2020-09-20", "Illinois": "2020-09-10", "New York": "2020-09-10", "Texas": "2020-09-15"
+}
 
 
 mid_dates_county = {"San Joaquin": "2020-05-26", "Contra Costa": "2020-06-02", "Alameda": "2020-06-03", "Kern": "2020-05-20", \
@@ -65,12 +68,13 @@ mid_dates_county = {"San Joaquin": "2020-05-26", "Contra Costa": "2020-06-02", "
  "Los Angeles": "2020-06-05", "Santa Clara": "2020-05-29", "Orange": "2020-06-12", "Riverside": "2020-05-26", "San Diego": "2020-06-02" \
  
 }
-mid_dates_nation = {"US": "2020-06-28", "Mexico": "2020-07-05", "India": "2020-07-30", "South Africa": "2020-06-01", "Brazil": "2020-07-20", \
- "Iran": "2020-05-03", "Bolivia": "2020-05-25", "Indonesia": "2020-07-01", "Italy": "2020-07-01", "Canada": "2020-08-15", "Russia": "2020-08-20", \
- "United Kindom": "2020-07-08", "Spain": "2020-06-28", "France": "2020-06-28", "Argentina": "2020-08-01", "United Kindom": "2020-07-20" 
+mid_dates_nation = {"US": "2020-06-15", "Mexico": "2020-07-05", "India": "2020-07-30", "South Africa": "2020-06-01", "Brazil": "2020-07-20", \
+ "Iran": "2020-08-30", "Bolivia": "2020-05-25", "Indonesia": "2020-08-01", "Italy": "2020-07-15", "Canada": "2020-08-15", "Russia": "2020-08-20", \
+ "United Kindom": "2020-07-08", "Spain": "2020-07-30", "France": "2020-06-28", "Argentina": "2020-08-01", "United Kindom": "2020-07-20", "Canada": "2020-08-30"
 }
 
 north_cal = ["Santa Clara", "San Mateo", "Alameda", "Contra Costa", "Sacramento", "San Joaquin", "Fresno"]
+
 
 def get_county_list(cc_limit=200, pop_limit=50000):
     non_county_list = ["Puerto Rico", "American Samoa", "Guam", "Northern Mariana Islands", "Virgin Islands"]
@@ -132,6 +136,7 @@ with open(json_file_name, 'r') as f:
 prediction_range = 100
 frame = []
 region_list = list(NE0_region.keys())
+region_list = [region for region in region_list if not region == "Independence, Arkansas"]
 # region_list = ["France"]
 for region in region_list:
     
@@ -143,11 +148,20 @@ for region in region_list:
             second_start_date = mid_dates[state]
             reopen_flag = True
         else:
-            second_start_date = "2020-06-15" 
+            second_start_date = "2020-08-30" 
             reopen_flag = False
 
         train_data = [data.get(start_date, second_start_date, state), data.get(second_start_date, args.END_DATE, state)]
         full_data = [data.get(start_date, second_start_date, state), data.get(second_start_date, PRED_START_DATE, state)]
+
+        if state in mid_dates.keys():
+            resurge_start_date = mid_dates_state_resurge[state] if state in mid_dates_state_resurge.keys() else "2020-09-15"
+            train_data = [data.get(start_date, second_start_date, state), data.get(second_start_date, resurge_start_date, state), \
+             data.get(resurge_start_date, args.END_DATE, state)]
+            full_data = [data.get(start_date, second_start_date, state), data.get(second_start_date, resurge_start_date, state), \
+             data.get(resurge_start_date, PRED_START_DATE, state)]
+
+
         if state in decay_state.keys():
             a, decay = decay_state[state][0], decay_state[state][1]
         else:
@@ -168,24 +182,31 @@ for region in region_list:
         if state=="California" and county in mid_dates.keys():
             second_start_date = mid_dates[county]
             reopen_flag = True
-        elif state in mid_dates_state.keys() and not (state=="Arkansas" or state == "Montana"):
+        elif state in mid_dates_state.keys():
             second_start_date = mid_dates_state[state]
             reopen_flag = True
         else:
-            second_start_date = "2020-06-12"
+            second_start_date = "2020-08-30"
             reopen_flag = False
 
         train_data = [data.get(start_date, second_start_date, state, county), data.get(second_start_date, args.END_DATE, state, county)]
         full_data = [data.get(start_date, second_start_date, state, county), data.get(second_start_date, PRED_START_DATE, state, county)]
 
+        # train_data = [data.get(start_date, second_start_date, state), data.get(second_start_date, args.END_DATE, state)]
+        # full_data = [data.get(start_date, second_start_date, state), data.get(second_start_date, PRED_START_DATE, state)]
+
+        if state in mid_dates_state.keys():
+            resurge_start_date = mid_dates_state_resurge[state] if state in mid_dates_state_resurge.keys() else "2020-09-15"
+            train_data = [data.get(start_date, second_start_date, state, county), data.get(second_start_date, resurge_start_date, state, county), \
+             data.get(resurge_start_date, args.END_DATE, state, county)]
+            full_data = [data.get(start_date, second_start_date, state, county), data.get(second_start_date, resurge_start_date, state, county), \
+             data.get(resurge_start_date, PRED_START_DATE, state, county)]
 
         if state in decay_state.keys():
             a, decay = decay_state[state][0], decay_state[state][1]
         else:
             a, decay = 0.7, 0.32
-        if county in north_cal and state=="California":
-            decay = 0.03
-        pop_in = 1/300
+        pop_in = 1/400
 
         
     elif args.level == "nation":
@@ -206,12 +227,12 @@ for region in region_list:
         full_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, PRED_START_DATE, nation)]
 
         if nation=="US":
-            train_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, "2020-09-10", nation), data.get("2020-09-10", args.END_DATE, nation)]
-            full_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, "2020-09-10", nation), data.get("2020-09-10", PRED_START_DATE, nation)]
+            train_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, "2020-09-15", nation), data.get("2020-09-15", args.END_DATE, nation)]
+            full_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, "2020-09-15", nation), data.get("2020-09-15", PRED_START_DATE, nation)]
 
 
         a, decay = FR_nation[nation] 
-        pop_in = 1/400 if nation == "US" else 1/300
+        pop_in = 1/400 if nation == "US" else 1/400
 
 
     # determine the parameters including pop_in, N and E_0
@@ -235,7 +256,7 @@ for region in region_list:
             pop_in = 1/500
         if args.level == "nation" and (region == "Germany" or region == "Italy" or region=="Canada"):
             pop_in = 1/5000
-        if not args.level == "nation" and (state == "New York" or state == "New Jersey"):
+        if not args.level == "nation" and (state == "New York"):
             pop_in = 1/5000
         if args.level == "nation" and (region == "Iran"):
             pop_in = 1/1000  
@@ -256,11 +277,11 @@ for region in region_list:
          or state == "Nevada" or state == "Kansas" or state=="Kentucky" or state == "Tennessee" or state == "West Virginia":
             bias = 0.05
     if args.level == "nation":
-        bias = 0.015 if reopen_flag else 0.01
+        bias = 0.02 if reopen_flag else 0.01
         if nation == "Germany":
             bias = 0.001
         if nation == "US":
-            bias = 0.015
+            bias = 0.02
 
     data_confirm, data_fatality = train_data[0][0], train_data[0][1]
     model = Learner_SuEIR(N=N, E_0=E_0, I_0=data_confirm[0], R_0=data_fatality[0], a=a, decay=decay, bias=bias)

@@ -6,7 +6,7 @@ import math
 
 
 def get_JHU(level):
-    length = 200
+    length = ((datetime.today()-datetime.strptime("2020-03-10", "%Y-%m-%d")).days)
 
     if level=="nation":
         df_confirm = pd.read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")

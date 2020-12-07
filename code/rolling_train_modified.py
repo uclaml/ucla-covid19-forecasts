@@ -96,7 +96,7 @@ def rolling_train(model, init, train_data, new_sus, pop_in=1/500):
             model.bias=60
         else:
             # model.pop_in = pop_in
-            model.bias = 30
+            model.bias = 50
         # print (params, train_loss)
         prev_params = params
         params_all += [params]
@@ -137,12 +137,12 @@ def rolling_prediction(model, init, params_all, train_data, new_sus, pred_range,
             model.bias=60
         else:
             # model.pop_in = pop_in
-            model.bias = 30
+            model.bias = 50
         
         
-    model.bias = 30-len(data_confirm)
+    model.bias = 60-len(data_confirm)
     if len(train_data)==3:
-        model.bias = 30-len(data_confirm)
+        model.bias = 50-len(data_confirm)
         # print(init)
     # print(model.N)
     # if len(train_data)==1:
@@ -192,7 +192,7 @@ def rolling_prediction(model, init, params_all, train_data, new_sus, pred_range,
     
     # print (smoothing)
 
-    modified_slope_gap_fatality = (slope_fatality_perday - slope_temp_F_perday[0])*0
+    modified_slope_gap_fatality = (slope_fatality_perday - slope_temp_F_perday[0])*smoothing_slope
     modified_slope_gap_fatality = np.maximum(np.minimum(modified_slope_gap_fatality, ave_fatality_perday/10), -ave_fatality_perday/20)
     slope_temp_F_perday = [slope_temp_F_perday[i] + modified_slope_gap_fatality * np.exp(-0.05*i**2) for i in range(len(slope_temp_F_perday))]
     temp_F_perday = [np.maximum(0, temp_F_perday[0] + np.sum(slope_temp_F_perday[0:i])) for i in range(len(slope_temp_F_perday)+1)]
@@ -242,7 +242,7 @@ def rolling_likelihood(model, init, params_all, train_data, new_sus, pop_in):
             model.bias=60
         else:
             # model.pop_in = pop_in
-            model.bias = 60
+            model.bias = 50
 
     model.reset()
     return loss_all[0], loss_all[-1]
