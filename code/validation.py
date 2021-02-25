@@ -42,7 +42,7 @@ START_nation = {"Brazil": "2020-03-30", "Canada": "2020-03-28", "Mexico": "2020-
 FR_nation = {"Brazil": [0.2,0.02], "Canada": [0.1,0.015], "Mexico": [0.35, 0.015], 
  "India": [0.20, 0.02], "Turkey": [1, 0.04], "Russia": [0.1, 0.022], "Saudi Arabia": [0.2, 0.035], "US": [0.75, 0.02], \
  "United Arab Emirates": [0.07, 0.04], "Qatar": [0.02, 0.05], "France": [0.25, 0.015], "Spain": [0.4, 0.02], \
- "Indonesia": [0.5, 0.02], "Peru": [0.1, 0.013], "Chile": [0.08, 0.025], "Pakistan": [0.16, 0.025], "Germany":[0.05, 0.01], "Italy":[0.35, 0.02], \
+ "Indonesia": [0.5, 0.02], "Peru": [0.1, 0.013], "Chile": [0.08, 0.025], "Pakistan": [0.16, 0.025], "Germany":[0.4, 0.01], "Italy":[0.35, 0.02], \
  "South Africa": [0.1, 0.026], "Sweden": [0.5, 0.028], "United Kingdom": [0.5, 0.028], "Colombia": [0.17, 0.01], "Argentina": [0.1, 0.012], "Bolivia": [0.2, 0.015], \
  "Ecuador": [0.5, 0.015], "Iran": [0.5, 0.02]}
 
@@ -71,8 +71,7 @@ mid_dates_county = {"San Joaquin": "2020-05-26", "Contra Costa": "2020-06-02", "
 }
 mid_dates_nation = {"US": "2020-06-15", "Mexico": "2020-07-05", "India": "2020-07-30", "South Africa": "2020-06-01", "Brazil": "2020-07-20", \
  "Iran": "2020-08-30", "Bolivia": "2020-05-25", "Indonesia": "2020-08-01", "Italy": "2020-07-15", "Canada": "2020-08-15", "Russia": "2020-08-20", \
- "United Kindom": "2020-07-08", "Spain": "2020-07-30", "France": "2020-06-28", "Argentina": "2020-08-01", "United Kindom": "2020-07-20", "Canada": "2020-08-30"
-}
+ "United Kindom": "2020-07-08", "Spain": "2020-08-30", "France": "2020-08-30", "Argentina": "2020-08-01", "United Kindom": "2020-07-20", "Canada": "2020-08-30"}
 
 north_cal = ["Santa Clara", "San Mateo", "Alameda", "Contra Costa", "Sacramento", "San Joaquin", "Fresno"]
 
@@ -103,7 +102,7 @@ def get_county_list(cc_limit=200, pop_limit=50000):
             train_data = data.get("2020-03-22", args.END_DATE, state, county)
             confirm, death = train_data[0], train_data[1]
             start_date = get_start_date(train_data)
-            if len(death) >0 and np.max(death)>=0 and np.max(confirm)>cc_limit and start_date < "2020-05-10":# and not county=="Lassen":
+            if len(death) >0 and np.max(death)>=0 and np.max(confirm)>cc_limit and start_date < "2020-05-10" and not county=="Lassen":
                 county_list += [region]
 
     return county_list
@@ -118,7 +117,7 @@ if __name__ == '__main__':
     if args.level == "state":
         # data = NYTimes(level='states')
         data = NYTimes(level='states') if args.dataset == "NYtimes" else JHU_US(level='states')
-        nonstate_list = ["American Samoa", "Diamond Princess", "Grand Princess", "Virgin Islands"]
+        nonstate_list = ["American Samoa", "Diamond Princess", "Grand Princess", "Virgin Islands", "Northern Mariana Islands"]
         region_list = [state for state in data.state_list if not state in nonstate_list]
         # region_list = mid_dates_state.keys()
         # print(data.state_list)
@@ -201,6 +200,8 @@ if __name__ == '__main__':
                 a, decay = 0.7, 0.3          
             # will rewrite it using json
             pop_in = 1/400
+            if state == "California":
+                pop_in = 0.01
         elif args.level == "county":
             county, state = region.split("_")
             region = county + ", " + state
@@ -252,7 +253,8 @@ if __name__ == '__main__':
             else:
                 second_start_date = "2020-07-30"
                 reopen_flag = False
-            pop_in = 1/400 if nation == "US" else 1/400
+            pop_in = 1/2000 if nation == "Germany" else 1/400
+
 
             start_date = START_nation[nation]
             train_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, args.END_DATE, nation)]
@@ -285,6 +287,8 @@ if __name__ == '__main__':
                     pop_in = 1/1000
             if args.level=="state" and reopen_flag and (np.mean(daily_confirm[-7:])<12.5 or mean_increase<1.1):
                 pop_in = 1/500
+                if state == "California":
+                    pop_in = 0.01
             if args.level == "nation" and ( region=="Canada"):
                 pop_in = 1/5000
             if not args.level == "nation" and (state == "New York"):
@@ -336,7 +340,7 @@ if __name__ == '__main__':
                 if args.level == "nation":
                     bias = 0.02 if reopen_flag else 0.01
                     if nation == "Germany":
-                        bias = 0.001
+                        bias = 0.02
                     if nation == "US":
                         bias = 0.02
                 data_confirm, data_fatality = train_data[0][0], train_data[0][1]

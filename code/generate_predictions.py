@@ -3,6 +3,7 @@ import pandas as pd
 import json
 import argparse
 import us
+import os
 
 from model import *
 from data import *
@@ -41,7 +42,7 @@ START_nation = {"Brazil": "2020-03-30", "Canada": "2020-03-28", "Mexico": "2020-
 FR_nation = {"Brazil": [0.2,0.02], "Canada": [0.1,0.015], "Mexico": [0.35, 0.015], 
  "India": [0.20, 0.02], "Turkey": [1, 0.04], "Russia": [0.1, 0.022], "Saudi Arabia": [0.2, 0.035], "US": [0.75, 0.02], \
  "United Arab Emirates": [0.07, 0.04], "Qatar": [0.02, 0.05], "France": [0.25, 0.015], "Spain": [0.4, 0.02], \
- "Indonesia": [0.5, 0.02], "Peru": [0.1, 0.013], "Chile": [0.08, 0.025], "Pakistan": [0.16, 0.025], "Germany":[0.05, 0.01], "Italy":[0.35, 0.02], \
+ "Indonesia": [0.5, 0.02], "Peru": [0.1, 0.013], "Chile": [0.08, 0.025], "Pakistan": [0.16, 0.025], "Germany":[0.4, 0.1], "Italy":[0.35, 0.02], \
  "South Africa": [0.1, 0.026], "Sweden": [0.5, 0.028], "United Kingdom": [0.5, 0.028], "Colombia": [0.17, 0.01], "Argentina": [0.1, 0.012], "Bolivia": [0.2, 0.015], \
  "Ecuador": [0.5, 0.015], "Iran": [0.5, 0.02]}
 
@@ -130,6 +131,12 @@ elif args.level == "nation":
         val_dir = "val_results_world/test"
 
 json_file_name = val_dir + args.dataset + "_" + "val_params_best_END_DATE_" + args.END_DATE + "_VAL_END_DATE_" + args.VAL_END_DATE
+if not os.path.exists(json_file_name):
+    json_file_name = val_dir + "JHU" + "_" + "val_params_best_END_DATE_" + args.END_DATE + "_VAL_END_DATE_" + args.VAL_END_DATE
+
+
+
+
 with open(json_file_name, 'r') as f:
     NE0_region = json.load(f)
 
@@ -254,6 +261,8 @@ for region in region_list:
                 pop_in = 1/1000
         if args.level=="state" and reopen_flag and (np.mean(daily_confirm[-7:])<12.5 or mean_increase<1.1):
             pop_in = 1/500
+            if state == "California":
+                pop_in = 0.01
         if args.level == "nation" and (region == "Germany" or region == "Italy" or region=="Canada"):
             pop_in = 1/5000
         if not args.level == "nation" and (state == "New York"):
@@ -279,7 +288,7 @@ for region in region_list:
     if args.level == "nation":
         bias = 0.02 if reopen_flag else 0.01
         if nation == "Germany":
-            bias = 0.001
+            bias = 0.02
         if nation == "US":
             bias = 0.02
 
