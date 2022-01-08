@@ -46,7 +46,9 @@ class Learner_SuEIR(Model):
 
         def calc_grad(t, y):
             S, E, I, _ = y
-            new_pop_in = self.pop_in*(self.pop-self.N)*(np.exp(-0.03*np.maximum(0, t-self.bias))+0.05)
+
+            # new population joining the suspecitible population
+            new_pop_in = self.pop_in*(self.pop-self.N)*(np.exp(-0.03*np.maximum(0, t-self.bias))+0.05) 
             return [new_pop_in-beta*S*(E+I)/self.N, beta*S*(E+I)/self.N-sigma*E, mu*E-gamma*I, gamma*I]
 
         solution = solve_ivp(
@@ -86,7 +88,8 @@ class Learner_SEIR(Model):
         self.R_0 = R_0
         self.a = a
         self.FRratio = a * \
-            np.minimum(np.exp(-decay * (np.arange(1000) + bias)), 1)
+            np.minimum(np.exp(-decay * (np.arange(1000) + bias)), 1) # decaying death date
+
     def __call__(self, size, params, init):
 
         beta, gamma, sigma = params

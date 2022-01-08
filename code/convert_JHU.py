@@ -4,7 +4,7 @@ from datetime import timedelta, datetime
 import math
 
 
-
+# get county/state level data from jhu covid github
 def get_JHU(level):
     length = ((datetime.today()-datetime.strptime("2020-03-10", "%Y-%m-%d")).days)
 

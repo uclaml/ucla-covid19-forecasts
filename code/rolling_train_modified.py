@@ -5,54 +5,40 @@ from data import NYTimes, Hospital_US, JHU_global
 
 
 
-def loss(pred, target, smoothing=10):
-    # print (pred)
+def loss(pred, target, smoothing=10): 
     return np.mean((np.log(pred+smoothing) - np.log(target+smoothing))**2)
 
 def train(model, init, prev_params, train_data, reg=0, lag=0):
+    # prev_params is not used, this is for the usage of defining regularization loss
 
     data_confirm, data_fatality = train_data[0], train_data[1]
     if len(train_data)==3:
         data_fatality = train_data[1] + train_data[2]
     size = len(data_confirm)
-    fatality_perday = np.diff(data_fatality)
-    target_ave_fatality_perday = np.median(
-        fatality_perday[np.maximum(0, len(fatality_perday)-7):])
-    confirm_perday = np.diff(data_confirm)
-    target_ave_confirm_perday = np.median(
-        confirm_perday[np.maximum(0, len(confirm_perday)-7):])
 
-    def loss_train(params):
+    fatality_perday = np.diff(data_fatality)
+    target_ave_fatality_perday = np.median(fatality_perday[np.maximum(0, len(fatality_perday)-7):])
+    confirm_perday = np.diff(data_confirm)
+    target_ave_confirm_perday = np.median(confirm_perday[np.maximum(0, len(confirm_perday)-7):])
+
+    def loss_train(params): # loss function for training
 
         _, _, _, pred_remove, pred_confirm, pred_fatality = model(size, params, init, lag)
 
         pred_fatality = pred_fatality + data_fatality[0] - pred_fatality[0]
         reg = 0.5
-        if len(train_data)==3:
+        if len(train_data)==3: # the data includes recovered cases
             pred_fatality = pred_remove
             reg = 0
         pred_ave_confirm_perday = np.mean(np.maximum(0, np.diff(pred_confirm)[-7:]))
         pred_ave_fatality_perday = np.mean(np.maximum(0, np.diff(pred_fatality)[-7:]))
 
-        # pick_inds = np.arange(0, len(data_fatality), 7)
-        # pick_inds = pick_inds + len(data_fatality)-1 - pick_inds[-1]
-
-        # pred_confirm_wk, pred_fatality_wk, data_confirm_wk, data_fatality_wk  \
-        # = pred_confirm[pick_inds], pred_fatality[pick_inds], data_confirm[pick_inds], data_fatality[pick_inds]
-
-        reg_loss = loss(np.array(params[2]), np.array(prev_params[2]), smoothing=0)
-        # print(np.diff(data_confirm_wk),np.diff(pred_confirm_wk))
-        # return loss((pred_confirm_wk), (data_confirm_wk)) \
-        #  + loss((pred_fatality_wk), (data_fatality_wk)) \
-        #  + 0.1*loss(np.diff(pred_confirm_wk), np.diff(data_confirm_wk)) \
-        #   + 0.1*loss(np.diff(pred_fatality_wk), np.diff(data_fatality_wk)) 
-            # + 0.5*loss(pred_ave_confirm_perday, target_ave_confirm_perday) + 0.5 * \
-            # loss(pred_ave_fatality_perday, target_ave_fatality_perday) + reg * reg_loss
-
+        # Use both daily cases and cumulative cases to construct the loss function
         return loss(pred_confirm, data_confirm) + 1*loss(pred_fatality, data_fatality) 
         + 1*loss(pred_ave_confirm_perday, target_ave_confirm_perday) + 3 * \
             loss(pred_ave_fatality_perday, target_ave_fatality_perday) 
 
+    # scipy optimizer
     optimal = minimize(
         loss_train,
         [0.2, .5e-2, 2.5e-1, 0.01],
@@ -65,6 +51,9 @@ def train(model, init, prev_params, train_data, reg=0, lag=0):
 
 def rolling_train(model, init, train_data, new_sus, pop_in=1/500):
 
+    # train multiple models in a rolling manner, the susceptible and exposed populations will be transfered to the next period as initialization
+
+
     lag = 0
     params_all = []
     loss_all = []
@@ -73,13 +62,13 @@ def rolling_train(model, init, train_data, new_sus, pop_in=1/500):
     model.reset()
     N = model.N
     ind = 0
-    # print (mean_increase, pop_in)
+
+
     for _train_data in train_data:
         ind += 1
         data_confirm, data_fatality = _train_data[0], _train_data[1]
         params, train_loss = train(model, init, prev_params, _train_data, reg=reg, lag=lag)
         pred_sus, pred_exp, pred_act, pred_remove, _, _ = model(len(data_confirm), params, init, lag=lag)
-        # print(params)
         lag += len(data_confirm)-10
         reg = 0
 
@@ -109,7 +98,6 @@ def rolling_train(model, init, train_data, new_sus, pop_in=1/500):
     model.reset()
     pred_sus, pred_exp, pred_act, pred_remove, pred_confirm, pred_fatality = model(7, params, init, lag=lag)
     
-    # print (pred_remove)
     
     return params_all, loss_all 
 
@@ -117,7 +105,6 @@ def rolling_prediction(model, init, params_all, train_data, new_sus, pred_range,
     lag = 0
     model.reset()
     ind = 0
-    # model.bias = len(train_data[0])+30
     for _train_data, params in zip(train_data, params_all):
         ind += 1
         data_confirm, data_fatality = _train_data[0], _train_data[1]
@@ -134,27 +121,24 @@ def rolling_prediction(model, init, params_all, train_data, new_sus, pred_range,
         model.N += new_sus
         if ind == 1:
             model.pop_in = pop_in
-            model.bias=60
+            model.bias=60 # refining the trend of death rate
         else:
             # model.pop_in = pop_in
             model.bias = 50
+
         
         
     model.bias = 60-len(data_confirm)
     if len(train_data)==3:
         model.bias = 50-len(data_confirm)
-        # print(init)
-    # print(model.N)
-    # if len(train_data)==1:
+
     init[0] = init[0] - new_sus
     model.N -= new_sus
 
-    # model.bias = 14
     pred_sus, pred_exp, pred_act, pred_remove, pred_confirm, pred_fatality = model(pred_range, params, init, lag=lag)
     pred_fatality = pred_fatality + train_data[-1][1][-1] - pred_fatality[0]
 
-    # print(data_fatality)
-    # pred_fatality = pred_remove
+    #using average results to smoothing the fatality and confirmed case predictions
     fatality_perday = np.diff(np.asarray(data_fatality))
     ave_fatality_perday = np.mean(fatality_perday[-7:])
 
@@ -174,11 +158,8 @@ def rolling_prediction(model, init, params_all, train_data, new_sus, pred_range,
 
     modified_slope_gap_confirm = np.maximum(np.minimum(modified_slope_gap_confirm, ave_confirm_perday/40), -ave_confirm_perday/100)
     slope_temp_C_perday = [slope_temp_C_perday[i] + modified_slope_gap_confirm * np.exp(-0.05*i**2) for i in range(len(slope_temp_C_perday))]
-    # print (modified_slope_gap_confirm)
     temp_C_perday = [np.maximum(0, temp_C_perday[0] + np.sum(slope_temp_C_perday[0:i])) for i in range(len(slope_temp_C_perday)+1)]
-    # print(np.array(temp_C_perday)[1:7])
 
-    # temp_C_perday = np.diff(pred_confirm)
     modifying_gap_confirm = (ave_confirm_perday - temp_C_perday[0])*smoothing
     temp_C_perday  = [np.maximum(0, temp_C_perday[i] + modifying_gap_confirm * np.exp(-0.1*i)) for i in range(len(temp_C_perday))]
     temp_C =  [pred_confirm[0] + np.sum(temp_C_perday[0:i])  for i in range(len(temp_C_perday)+1)]
@@ -190,8 +171,6 @@ def rolling_prediction(model, init, params_all, train_data, new_sus, pred_range,
     slope_temp_F_perday = np.diff(temp_F_perday)
     smoothing_slope = 0 if np.max(fatality_perday[-7:])>4*np.median(fatality_perday[-7:]) or np.median(fatality_perday[-7:])<0 else 1
     
-    # print (smoothing)
-
     modified_slope_gap_fatality = (slope_fatality_perday - slope_temp_F_perday[0])*smoothing_slope
     modified_slope_gap_fatality = np.maximum(np.minimum(modified_slope_gap_fatality, ave_fatality_perday/10), -ave_fatality_perday/20)
     slope_temp_F_perday = [slope_temp_F_perday[i] + modified_slope_gap_fatality * np.exp(-0.05*i**2) for i in range(len(slope_temp_F_perday))]
@@ -207,6 +186,9 @@ def rolling_prediction(model, init, params_all, train_data, new_sus, pred_range,
     return pred_confirm, pred_fatality, pred_act
 
 def rolling_likelihood(model, init, params_all, train_data, new_sus, pop_in):
+
+    # calculating the likelihood for determine the confidence interval
+
     lag = 0
     model.reset()
     loss_all = []
