@@ -3,9 +3,9 @@
 
 ### How to get forecast results of confirmed cases, deaths at different levels?
 
-Step 1: Run ```validation.py``` to generate validation file for selecting hyperparameters, e.g.,
+Step 1: Run ```validation.py``` to generate validation file for selecting hyperparameters, e.g., end date should be after 2021-01-01
 ```python
-python validation.py --END_DATE 2020-07-07 --VAL_END_DATE 2020-07-14  --dataset NYtimes --level state
+python validation.py --END_DATE 2021-07-07 --VAL_END_DATE 2021-07-14  --dataset NYtimes --level state
 ```
 
 Step 2: Generate prediction results by running ```generate_predictions.py```, e.g.,
