@@ -29,13 +29,12 @@ START_nation = {"Brazil": "2020-03-30", "Canada": "2020-03-28", "Mexico": "2020-
 
 
 FR_nation = {"Brazil": [0.2,0.02], "Canada": [0.1,0.015], "Mexico": [0.35, 0.015], 
- "India": [0.20, 0.02], "Turkey": [1, 0.04], "Russia": [0.1, 0.022], "Saudi Arabia": [0.2, 0.035], "US": [0.75, 0.025], \
- "United Arab Emirates": [0.07, 0.04], "Qatar": [0.02, 0.05], "France": [0.25, 0.015], "Spain": [0.4, 0.03], \
- "Indonesia": [0.5, 0.024], "Peru": [0.1, 0.013], "Chile": [0.08, 0.025], "Pakistan": [0.16, 0.025], "Germany":[0.05, 0.01], "Italy":[0.35, 0.02], \
+ "India": [0.20, 0.02], "Turkey": [1, 0.04], "Russia": [0.1, 0.022], "Saudi Arabia": [0.2, 0.035], "US": [0.75, 0.02], \
+ "United Arab Emirates": [0.07, 0.04], "Qatar": [0.02, 0.05], "France": [0.25, 0.015], "Spain": [0.4, 0.02], \
+ "Indonesia": [0.5, 0.02], "Peru": [0.1, 0.013], "Chile": [0.08, 0.025], "Pakistan": [0.16, 0.025], "Germany":[0.05, 0.01], "Italy":[0.35, 0.02], \
  "South Africa": [0.1, 0.026], "Sweden": [0.5, 0.028], "United Kingdom": [0.5, 0.028], "Colombia": [0.17, 0.01], "Argentina": [0.1, 0.012], "Bolivia": [0.2, 0.015], \
  "Ecuador": [0.5, 0.015], "Iran": [0.5, 0.02]}
-
-decay_state = {"Pennsylvania": [0.7, 0.024], "New York": [0.7, 0.042], "Illinois": [0.7, 0.035], "California": [0.5,0.016], "Massachusetts": [0.7,0.026], "New Jersey": [0.7,0.03], \
+decay_state = {"Pennsylvania": [0.7, 0.024], "New York": [0.7, 0.04], "Illinois": [0.7, 0.035], "California": [0.5,0.022], "Massachusetts": [0.7,0.026], "New Jersey": [0.7,0.03], \
 "Michigan": [0.8,0.035], "Virginia": [0.7,0.034], "Maryland": [0.7,0.024], "Washington": [0.7,0.036], "North Carolina": [0.7,0.018], "Wisconsin": [0.7,0.034], "Texas": [0.3,0.016], \
 "New Mexico": [0.7,0.02], "Louisiana": [0.4,0.02], "Arkansas": [0.7,0.02], "Delaware": [0.7,0.03], "Georgia": [0.7,0.015], "Arizona": [0.7,0.02], "Connecticut": [0.7,0.026], "Ohio": [0.7,0.024], \
 "Kentucky": [0.7,0.023], "Kansas": [0.7,0.02], "New Hampshire": [0.7,0.014], "Alabama": [0.7,0.024], "Indiana": [0.7,0.03], "South Carolina": [0.7,0.02], "Colorado": [0.7,0.02], "Florida": [0.4,0.016], \
@@ -44,11 +43,13 @@ decay_state = {"Pennsylvania": [0.7, 0.024], "New York": [0.7, 0.042], "Illinois
 "Nebraska": [0.7,0.02], "Montana": [0.5,0.02]}
 
 mid_dates_state = {"Alabama": "2020-06-03", "Arizona": "2020-05-28", "Arkansas": "2020-05-11", "California": "2020-05-30", "Georgia": "2020-06-05",
- "Nevada": "2020-06-01", "Oklahoma": "2020-05-31", "Oregon": "2020-05-29", "Texas": "2020-06-01", "Ohio": "2020-06-09",
+ "Nevada": "2020-06-01", "Oklahoma": "2020-05-31", "Oregon": "2020-05-29", "Texas": "2020-06-15", "Ohio": "2020-06-09",
      "West Virginia": "2020-06-08", "Florida": "2020-06-01", "South Carolina": "2020-05-25", "Utah": "2020-05-28", "Iowa": "2020-06-20", "Idaho": "2020-06-15",
-     "Montana": "2020-05-15", "Minnesota": "2020-06-20"
+     "Montana": "2020-06-15", "Minnesota": "2020-06-20", "Illinois": "2020-06-30", "New Jersey": "2020-06-30", "North Carolina": "2020-06-20" , "Maryland":  "2020-06-25",
+     "Kentucky": "2020-06-30", "Pennsylvania": "2020-07-01", "Colorado": "2020-06-20", "New York": "2020-06-30", "Alaska": "2020-06-30", "Washington": "2020-06-01"
 }
-
+mid_dates_state_resurge = {"Colorado": "2020-09-10", "California": "2020-09-30", "Florida": "2020-09-20", "Illinois": "2020-09-10", "New York": "2020-09-10", "Texas": "2020-09-15"
+}
 
 
 mid_dates_county = {"San Joaquin": "2020-05-26", "Contra Costa": "2020-06-02", "Alameda": "2020-06-03", "Kern": "2020-05-20", \
@@ -56,9 +57,9 @@ mid_dates_county = {"San Joaquin": "2020-05-26", "Contra Costa": "2020-06-02", "
  "Los Angeles": "2020-06-05", "Santa Clara": "2020-05-29", "Orange": "2020-06-12", "Riverside": "2020-05-26", "San Diego": "2020-06-02" \
  
 }
-mid_dates_nation = {"US": "2020-06-28", "Mexico": "2020-07-05", "India": "2020-07-30", "South Africa": "2020-06-01", "Brazil": "2020-07-20", \
- "Iran": "2020-05-03", "Bolivia": "2020-05-25", "Indonesia": "2020-07-01", "Italy": "2020-07-01", "Canada": "2020-08-15", "Russia": "2020-08-20", \
- "United Kindom": "2020-07-08", "Spain": "2020-06-28", "France": "2020-06-28", "Argentina": "2020-08-01", "United Kindom": "2020-07-20" 
+mid_dates_nation = {"US": "2020-06-15", "Mexico": "2020-07-05", "India": "2020-07-30", "South Africa": "2020-06-01", "Brazil": "2020-07-20", \
+ "Iran": "2020-08-30", "Bolivia": "2020-05-25", "Indonesia": "2020-08-01", "Italy": "2020-07-15", "Canada": "2020-08-15", "Russia": "2020-08-20", \
+ "United Kindom": "2020-07-08", "Spain": "2020-07-30", "France": "2020-06-28", "Argentina": "2020-08-01", "United Kindom": "2020-07-20", "Canada": "2020-08-30"
 }
 
 north_cal = ["Santa Clara", "San Mateo", "Alameda", "Contra Costa", "Sacramento", "San Joaquin", "Fresno"]
@@ -67,14 +68,14 @@ north_cal = ["Santa Clara", "San Mateo", "Alameda", "Contra Costa", "Sacramento"
 
 
 
-pred_start_date = "2020-10-18"
+pred_start_date = "2021-09-19"
 
-write_file_name = pred_start_date+ "-UCLA-SuEIR2.csv"
+write_file_name = pred_start_date+ "-UCLA-SuEIR_state.csv"
 
-Sat_list = [(pd.to_datetime("2020-10-24") + timedelta(days=i*7)).strftime("%Y-%m-%d") for i in range(200)]
+Sat_list = [(pd.to_datetime("2021-09-25") + timedelta(days=i*7)).strftime("%Y-%m-%d") for i in range(200)]
 
 data = JHU_US(level="states")
-nonstate_list = ["American Samoa", "Diamond Princess", "Grand Princess", "Virgin Islands"]
+nonstate_list = ["American Samoa", "Diamond Princess", "Grand Princess", "Virgin Islands", "Northern Mariana Islands", "vermont"]
 state_list = ["US"]+[state for state in data.state_list if not state in nonstate_list]
 # state_list = ["Texas"]
 
@@ -94,9 +95,10 @@ for state in state_list:
         start_date = START_nation[nation]
         train_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, args.END_DATE, nation)]
         full_data = [data.get('2020-03-22', second_start_date, nation), data.get(second_start_date, PRED_START_DATE, nation)]
-        # if nation=="US":
-        # train_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, "2020-09-10", nation), data.get("2020-09-10", args.END_DATE, nation)]
-        # full_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, "2020-09-10", nation), data.get("2020-09-10", PRED_START_DATE, nation)]
+        if state=="US":
+            resurge_start_date = "2020-09-15"
+            train_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, resurge_start_date, nation), data.get(resurge_start_date, args.END_DATE, nation)]
+            full_data = [data.get(start_date, second_start_date, nation), data.get(second_start_date, resurge_start_date, nation), data.get(resurge_start_date, PRED_START_DATE, nation)]
 
         a, decay = FR_nation[nation]
         reopen_flag = True 
@@ -115,21 +117,36 @@ for state in state_list:
             second_start_date = mid_dates[state]
             reopen_flag = True
         else:
-            second_start_date = "2020-06-15" 
+            second_start_date = "2020-08-30" 
             reopen_flag = False
 
         train_data = [data.get(start_date, second_start_date, state), data.get(second_start_date, args.END_DATE, state)]
-        full_data = [data.get('2020-03-22', second_start_date, state), data.get(second_start_date, PRED_START_DATE, state)]
+        full_data = [data.get(start_date, second_start_date, state), data.get(second_start_date, PRED_START_DATE, state)]
+
+        if state in mid_dates_state.keys():
+            resurge_start_date = mid_dates_state_resurge[state] if state in mid_dates_state_resurge.keys() else "2020-09-15"
+            train_data = [data.get(start_date, second_start_date, state), data.get(second_start_date, resurge_start_date, state), \
+             data.get(resurge_start_date, args.END_DATE, state)]
+            full_data = [data.get(start_date, second_start_date, state), data.get(second_start_date, resurge_start_date, state), \
+             data.get(resurge_start_date, PRED_START_DATE, state)]
+
+
         if state in decay_state.keys():
             a, decay = decay_state[state][0], decay_state[state][1]
         else:
             a, decay = 0.7, 0.3
 
+        # json_file_name = "val_results_state/" + args.dataset + "_val_params_best_END_DATE_" + args.END_DATE + "_VAL_END_DATE_" + args.VAL_END_DATE
+        # with open(json_file_name, 'r') as f:           
+        #     NE0_region = json.load(f)
         json_file_name = "val_results_state/" + "JHU" + "_val_params_best_END_DATE_" + args.END_DATE + "_VAL_END_DATE_" + args.VAL_END_DATE
+
         with open(json_file_name, 'r') as f:           
             NE0_region = json.load(f)
-        N, E_0 = NE0_region[state][0], NE0_region[state][1] 
+        N, E_0 = NE0_region[state][0], NE0_region[state][1]
         pop_in = 1/400
+        if state == "California" or state == "New York":
+            pop_in = 0.01
 
     last_confirm, last_fatality = train_data[-1][0], train_data[-1][1]
     daily_confirm = np.diff(last_confirm)
@@ -161,7 +178,7 @@ for state in state_list:
          or state == "Nevada" or state == "Kansas" or state=="Kentucky" or state == "Tennessee" or state == "West Virginia":
             bias = 0.05
     else:
-        bias = 0.015
+        bias = 0.02
     data_confirm, data_fatality = train_data[0][0], train_data[0][1]
     model = Learner_SuEIR(N=N, E_0=E_0, I_0=data_confirm[0], R_0=data_fatality[0], a=a, decay=decay,bias=bias)
     init = [N-E_0-data_confirm[0]-data_fatality[0], E_0, data_confirm[0], data_fatality[0]]
@@ -179,7 +196,7 @@ for state in state_list:
     interval1=np.linspace(0.7,1.0,num=12)
     interval2=np.linspace(1.3,1.0,num=12)
     ####
-    params = params_all[1]
+    params = params_all[1] if len(params_all)==2 else params_all[2]
     A_inv, I_inv, R_inv=[],[],[]
     prediction_list=[]
     for index_cof in range(12):
@@ -192,8 +209,11 @@ for state in state_list:
         for beta0 in beta_list:
             for gamma0 in gamma_list:
                 for sigma0 in sigma_list:
-                    for mu0 in mu_list:
-                        temp_param = [params_all[0]] + [np.asarray([beta0,gamma0,sigma0,mu0])]
+                    for mu0 in mu_list: 
+                        if len(params_all) == 2:
+                            temp_param = [params_all[0]] + [np.asarray([beta0,gamma0,sigma0,mu0])]
+                        else:
+                            temp_param = [params_all[0]] + [params_all[1]] + [np.asarray([beta0,gamma0,sigma0,mu0])]
                         temp_pred=rolling_prediction(model, init, temp_param, full_data, new_sus, pred_range=100, pop_in=pop_in, daily_smooth=True)
 
                         prediction_list += [temp_pred]
@@ -225,7 +245,7 @@ for state in state_list:
     for quantile in death_quantiles:
         # write cumulative deaths
         week_inds = [i for i in range(len(dates)) if dates[i] in Sat_list]
-        R_inv_wk = R_inv[:,week_inds]
+        R_inv_wk = np.maximum(R_inv[:,week_inds], 1e-13)
         diff_dates = [str(i+1) + " wk ahead cum death" for i in range(len(week_inds))]
         wk_dates = [Sat_list[i] for i in range(len(week_inds))]
         pred_data = {}
@@ -246,6 +266,8 @@ for state in state_list:
         diffR_wk = np.zeros(R_inv_wk.shape)
         diffR_wk[:, 1:] = np.diff(R_inv_wk)
         diffR_wk[:, 0] = R_inv_wk[:,0]-death_lastsat
+
+        diffR_wk = np.maximum(diffR_wk, 0)
         diff_dates = [str(i+1) + " wk ahead inc death" for i in range(len(week_inds))]
 
         pred_data_inc = pred_data.copy()
