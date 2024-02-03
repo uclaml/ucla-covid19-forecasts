@@ -1,6 +1,39 @@
 
 ## SuEIR model for forecasting confirmed cases, deaths, and hospitaliztions at nation, state, and county levels.
 
+## How to install
+
+Enviroment should be installed via venv as it prevents weird system-wide python installations
+
+### Install venv
+
+```# apt install python3.9-venv ```
+
+Python version can also be different.
+
+```$ python3 -m venv .venv```
+
+### Activate venv
+```$ source .venv/bin/activate```
+
+### Check that venv activated
+
+```$ which python```
+
+It should print something that mentions .venv folder
+
+### Install needed packages
+
+```$ pip install -r requirements```
+
+Enviroment is ready to be used
+
+### Using after installation
+
+No need to install venv again. Just run following snippet:
+
+```$ source .venv/bin/activate```
+
 ### How to get forecast results of confirmed cases, deaths at different levels?
 
 Step 1: Run ```validation.py``` to generate validation file for selecting hyperparameters, e.g., end date should be after 2021-01-01
