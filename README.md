@@ -1,4 +1,5 @@
 
+[![Lines of Code](https://sonar.sampozki.fi/api/project_badges/measure?project=projektikurssi&metric=ncloc&token=sqb_04353d44a4cd7097433cc4a3af368d75be8becda)](https://sonar.sampozki.fi/dashboard?id=projektikurssi)
 [![Coverage](https://sonar.sampozki.fi/api/project_badges/measure?project=projektikurssi&metric=coverage&token=sqb_04353d44a4cd7097433cc4a3af368d75be8becda)](https://sonar.sampozki.fi/dashboard?id=projektikurssi)
 [![Bugs](https://sonar.sampozki.fi/api/project_badges/measure?project=projektikurssi&metric=bugs&token=sqb_04353d44a4cd7097433cc4a3af368d75be8becda)](https://sonar.sampozki.fi/dashboard?id=projektikurssi)
 [![Code Smells](https://sonar.sampozki.fi/api/project_badges/measure?project=projektikurssi&metric=code_smells&token=sqb_04353d44a4cd7097433cc4a3af368d75be8becda)](https://sonar.sampozki.fi/dashboard?id=projektikurssi)
