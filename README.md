@@ -1,4 +1,13 @@
 
+[![Coverage](https://sonar.sampozki.fi/api/project_badges/measure?project=projektikurssi&metric=coverage&token=sqb_04353d44a4cd7097433cc4a3af368d75be8becda)](https://sonar.sampozki.fi/dashboard?id=projektikurssi)
+[![Bugs](https://sonar.sampozki.fi/api/project_badges/measure?project=projektikurssi&metric=bugs&token=sqb_04353d44a4cd7097433cc4a3af368d75be8becda)](https://sonar.sampozki.fi/dashboard?id=projektikurssi)
+[![Code Smells](https://sonar.sampozki.fi/api/project_badges/measure?project=projektikurssi&metric=code_smells&token=sqb_04353d44a4cd7097433cc4a3af368d75be8becda)](https://sonar.sampozki.fi/dashboard?id=projektikurssi)
+[![Duplicated Lines (%)](https://sonar.sampozki.fi/api/project_badges/measure?project=projektikurssi&metric=duplicated_lines_density&token=sqb_04353d44a4cd7097433cc4a3af368d75be8becda)](https://sonar.sampozki.fi/dashboard?id=projektikurssi)
+[![Maintainability Rating](https://sonar.sampozki.fi/api/project_badges/measure?project=projektikurssi&metric=sqale_rating&token=sqb_04353d44a4cd7097433cc4a3af368d75be8becda)](https://sonar.sampozki.fi/dashboard?id=projektikurssi)
+[![Security Rating](https://sonar.sampozki.fi/api/project_badges/measure?project=projektikurssi&metric=security_rating&token=sqb_04353d44a4cd7097433cc4a3af368d75be8becda)](https://sonar.sampozki.fi/dashboard?id=projektikurssi)
+[![Reliability Rating](https://sonar.sampozki.fi/api/project_badges/measure?project=projektikurssi&metric=reliability_rating&token=sqb_04353d44a4cd7097433cc4a3af368d75be8becda)](https://sonar.sampozki.fi/dashboard?id=projektikurssi)
+
+
 # SuEIR model for forecasting the COVID-19 related confirmed cases, deaths, and hospitaliztions.
 
 ## What is the SuEIR model?
@@ -26,6 +35,9 @@ Illustration of the SuEIR++ model.
 ## Projection results
 We include all history projections (confirmed cases, deaths, and hospitalizations) in the folder ```projection_result/```, which are updated on a weekly basis. We also visualize our forecasts at county, state, and nation levels in our website [covid19.uclaml.org](https://covid19.uclaml.org/).
 
+
+
+
 ## Reference
 For more technical details, please refer to our [manuscript](https://www.medrxiv.org/content/10.1101/2020.05.24.20111989v1.full.pdf).
 ```
@@ -36,4 +48,7 @@ For more technical details, please refer to our [manuscript](https://www.medrxiv
   year={2020},
   publisher={Cold Spring Harbor Laboratory Press}
 }
-``` 
+```
+
+[![Quality gate](https://sonar.sampozki.fi/api/project_badges/quality_gate?project=projektikurssi&token=sqb_04353d44a4cd7097433cc4a3af368d75be8becda)](https://sonar.sampozki.fi/dashboard?id=projektikurssi)
+
