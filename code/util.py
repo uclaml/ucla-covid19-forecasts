@@ -8,6 +8,9 @@ import sys
 from scipy.optimize import curve_fit
 from scipy.stats import lognorm
 import json
+# According to 'us' -package changelog, DC_STATEHOOD env variable should be set truthy before (FIRST) import
+import os
+os.environ['DC_STATEHOOD'] = '1'
 import us
 
 def func(x, a, b, bias):   
