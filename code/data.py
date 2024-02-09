@@ -3,7 +3,12 @@ import pandas as pd
 import numpy as np
 import datetime
 import warnings
+import os
+# According to 'us' -package changelog, DC_STATEHOOD env variable should be set truthy before (FIRST) import
+# In case this is the first import, needs to be set here.
+os.environ['DC_STATEHOOD'] = '1'
 import us
+
 from convert_JHU import get_JHU
 
 class Data(object):
