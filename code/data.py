@@ -36,7 +36,8 @@ class xxx(Data):
 class NYTimes(Data):
     def __init__(self, level='states'):
         assert level == 'states' or level == 'counties', 'level must be [states|counties]'
-        url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-' + level + '.csv'
+        #url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-' + level + '.csv'
+        url = 'data/nytimes_us-' + level + '.csv' # .csv files localized to ../code/data from the nytimes github
         self.table = pd.read_csv(url).drop('fips', axis=1)
         assert not self.table.isnull().values.any(), 'We do not handle nan cases in NYTimes'
         self.level = level
@@ -110,9 +111,12 @@ class JHU_US(Data):
 
 class JHU_global(Data):
     def __init__(self):
-        confirm = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
-        death = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv'
-        recover = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv'
+        #confirm = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
+        #death = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv'
+        #recover = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv'
+        confirm = 'data/jhu_confirmed_global.csv'
+        death = 'data/jhu_deaths_global.csv'
+        recover = 'data/jhu_recovered_global.csv'
         confirm_table = pd.read_csv(confirm).drop(['Lat', 'Long'], axis=1)
         death_table = pd.read_csv(death).drop(['Lat', 'Long'], axis=1)
         recover_table = pd.read_csv(recover).drop(['Lat', 'Long'], axis=1)
@@ -129,10 +133,19 @@ class JHU_global(Data):
         end = str(date[-1])
         return start, end
 
+    # Get the data of the country from dates within the given period
+    # Possible fix for crashing here is in the commented code
     def get(self, start_date, end_date, country):
         date = pd.to_datetime(self.confirm_table.index)
+        #countryconfirm = self.confirm_table[country].iloc[1:] # remove Province/State' 
+        #countrydeath = self.death_table[country].iloc[1:]
+        #countryrecover = self.recover_table[country].iloc[1:]
+        #date = pd.to_datetime(self.confirm_table.index[1:])
         start = datetime.datetime.strptime(start_date, '%Y-%m-%d')
         end = datetime.datetime.strptime(end_date, '%Y-%m-%d')
+        #confirm = countryconfirm.loc[(date >= start) & (date <= end)]
+        #death = countrydeath.loc[(date >= start) & (date <= end)]
+        #recover = countryrecover.loc[(date >= start) & (date <= end)]
         confirm = self.confirm_table[country].loc[(
             date >= start) & (date <= end)]
         death = self.death_table[country].loc[(date >= start) & (date <= end)]
@@ -141,7 +154,7 @@ class JHU_global(Data):
         return confirm.to_numpy(), death.to_numpy(), recover.to_numpy()
 
 
-class Hospital_CA(Data):
+class Hospital_CA(Data): #This is not used in the base code, also the url is invalid (17.02.2024), and there is no way to find the dataset otherwise
     def __init__(self):
         url = 'https://data.chhs.ca.gov/dataset/6882c390-b2d7-4b9a-aefa-2068cee63e47/resource/6cd8d424-dfaa-4bdd-9410-a3d656e1176e/download/covid19data.csv'
         self.table = pd.read_csv(url)[['Most Recent Date', 'County Name',
@@ -160,8 +173,8 @@ class Hospital_CA(Data):
         mask = (dates >= start) & (dates <= end)
         return table[mask]['COVID-19 Positive Patients'].to_numpy(), table[mask]['ICU COVID-19 Positive Patients'].to_numpy()
 
-class Hospital_US(Data):
-    def __init__(self, state):
+class Hospital_US(Data):       # The url is invalid (17.02.2024), no way to know what data this was referencing
+    def __init__(self, state): # it also appears this data is not used in the base code.
         url = 'https://covidtracking.com/api/v1/states/{}/daily.csv'.format(us.states.lookup(state).abbr.lower())
         table = pd.read_csv(url)[['date', 'hospitalizedCurrently', 'inIcuCurrently']]
         # Here we assume that once there is data, then the data is cumulative
