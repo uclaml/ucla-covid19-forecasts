@@ -222,7 +222,7 @@ class Hospital_CA(Data): #This is not used in the base code, also the url is inv
     Inherits the Data base class.
     """ 
     def __init__(self):
-        """! Hospital_CA class initializer. Creates dataframe.
+        """! Hospital_CA class initializer. Creates pandas dataframe.
         """
         url = 'https://data.chhs.ca.gov/dataset/6882c390-b2d7-4b9a-aefa-2068cee63e47/resource/6cd8d424-dfaa-4bdd-9410-a3d656e1176e/download/covid19data.csv'
         self.table = pd.read_csv(url)[['Most Recent Date', 'County Name',
@@ -252,10 +252,10 @@ class Hospital_CA(Data): #This is not used in the base code, also the url is inv
         return table[mask]['COVID-19 Positive Patients'].to_numpy(), table[mask]['ICU COVID-19 Positive Patients'].to_numpy()
 
 class Hospital_US(Data):       # The url is invalid (17.02.2024), no way to know what data this was referencing. Possibly used right at the end of data.py. Someone should probably make this work if possible.
-    """! Class for hospital data across the United States.
+    """! Class for hospital data across the United States. Inherits the Data base class.
     """
     def __init__(self, state): 
-        """! Hospital_US class initializer. Creates dataframe.
+        """! Hospital_US class initializer. Creates pandas dataframe.
         """
         url = 'https://covidtracking.com/api/v1/states/{}/daily.csv'.format(us.states.lookup(state).abbr.lower())
         table = pd.read_csv(url)[['date', 'hospitalizedCurrently', 'inIcuCurrently']]
