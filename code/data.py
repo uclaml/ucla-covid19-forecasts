@@ -97,8 +97,6 @@ class NYTimes(Data):
         # print(end_date)
         end = datetime.datetime.strptime(end_date, '%Y-%m-%d')
         mask = (date >= start) & (date <= end)
-        asdtest = tab[mask]['cases'].to_numpy()
-        newtest = 2
         return tab[mask]['cases'].to_numpy(), tab[mask]['deaths'].to_numpy()
 
 class JHU_US(Data):
