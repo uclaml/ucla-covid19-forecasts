@@ -219,20 +219,22 @@ class Hospital_CA(Data): #This is not used in the base code, also the url is inv
     """! Class for hospital data of California Health and Human Services. Seemingly not used in the code.
     Inherits the Data base class.
     """ 
-    def __init__(self):
+    def __init__(self): # Taking a crack at this
         """! Hospital_CA class initializer. Creates pandas dataframe.
         """
-        url = 'https://data.chhs.ca.gov/dataset/6882c390-b2d7-4b9a-aefa-2068cee63e47/resource/6cd8d424-dfaa-4bdd-9410-a3d656e1176e/download/covid19data.csv'
-        self.table = pd.read_csv(url)[['Most Recent Date', 'County Name',
-                                       'COVID-19 Positive Patients', 'ICU COVID-19 Positive Patients']]
+        #url = 'https://data.chhs.ca.gov/dataset/6882c390-b2d7-4b9a-aefa-2068cee63e47/resource/6cd8d424-dfaa-4bdd-9410-a3d656e1176e/download/covid19data.csv'
+        datafile = 'data/covid19hospitalbycounty_california.csv'
+        #self.table = pd.read_csv(url)[['Most Recent Date', 'County Name',                               # The columns are different... fuck
+                                       #'COVID-19 Positive Patients', 'ICU COVID-19 Positive Patients']] # I assume COVID Positive = COVID confirmed
+        self.table = pd.read_csv(datafile)[['todays_date', 'county', 'hospitalized_covid_confirmed_patients', 'icu_covid_confirmed_patients']]
 
     def date_range(self, region):
         """! Get the first and last dates of available data in the dataset.
         @param region  Name of the region (county) for which range is being looked up.
         @return  Tuple of strings, first date and last date.'
         """
-        table = self.table[self.table['County Name'] == region]
-        dates = pd.to_datetime(table['Most Recent Date']).dt.date.to_numpy()
+        table = self.table[self.table['county'] == region] # was County Name
+        dates = pd.to_datetime(table['todays_date']).dt.date.to_numpy() # was Most Recent Date
         return dates[0], dates[-1]
 
     def get(self, start_date, end_date, region):
@@ -242,12 +244,12 @@ class Hospital_CA(Data): #This is not used in the base code, also the url is inv
         @param region  Name of the region (county) for which data is wanted.
         @return  Tuple of arrays, arrays contain numbers of COVID positive patients and positive patients in ICU (intensive care).
         """
-        table = self.table[self.table['County Name'] == region]
-        dates = pd.to_datetime(table['Most Recent Date'])
+        table = self.table[self.table['county'] == region] # ^
+        dates = pd.to_datetime(table['todays_date'])       # ^
         start = datetime.datetime.strptime(start_date, '%Y-%m-%d')
         end = datetime.datetime.strptime(end_date, '%Y-%m-%d')
         mask = (dates >= start) & (dates <= end)
-        return table[mask]['COVID-19 Positive Patients'].to_numpy(), table[mask]['ICU COVID-19 Positive Patients'].to_numpy()
+        return table[mask]['hospitalized_covid_confirmed_patients'].to_numpy(), table[mask]['icu_covid_confirmed_patients'].to_numpy() # ^
 
 class Hospital_US(Data):       # The url is invalid (17.02.2024), no way to know what data this was referencing. Possibly used right at the end of data.py. Someone should probably make this work if possible.
     """! Class for hospital data across the United States. Inherits the Data base class.
