@@ -14,31 +14,78 @@ os.environ['DC_STATEHOOD'] = '1'
 import us
 
 def func(x, a, b, bias):   
+    """! Function used apparently to generate a coefficient. Used to add fluctuation to data. Seemingly not used by the program.
+    @param x  an array of numeric data
+    @param a  a numeric value used to calculate the coefficient
+    @param b  a numeric value used to calculate the coefficient
+    @param bias  a numeric value used to calculate the coefficient
+    @return  the newly calcluated coefficient
+    """
     return a*np.minimum(np.exp(-b*(x+bias)), 1)
-def func_root(x, a, b, bias):   
+
+def func_root(x, a, b, bias):
+    """! Function used apparently to generate a coefficient. Instead of using x and bias, it uses the root of x. Seemingly not used by the program.
+    @param x  an array of numeric data
+    @param a  a numeric value used to calculate the coefficient
+    @param b  a numeric value used to calculate the coefficient
+    @param bias  an unused parameter
+    @return  the newly calcluated coefficient
+    """   
     return a*np.minimum(np.exp(-b*(x**0.5)), 1)
-def func_new(x, a, b, bias):   
+
+def func_new(x, a, b, bias):
+    """! Function used apparently to generate a coefficient. Like func, but adds 0.2 to the value. Seemingly not used by the program.
+    @param x  an array of numeric data
+    @param a  a numeric value used to calculate the coefficient
+    @param b  a numeric value used to calculate the coefficient
+    @param bias  a numeric value used to calculate the coefficient
+    @return  the newly calcluated coefficient
+    """   
     return a*np.minimum(np.exp(-b*(x+bias)), 1) + 0.2
+
 def func_poly(x, a, b, bias):
+    """! Function used apparently to generate a coefficient. Calculated differently than in func. Seemingly not used by the program.
+    @param x  an array of numeric data
+    @param a  a numeric value used to calculate the coefficient
+    @param b  a numeric value used to calculate the coefficient
+    @param bias  a numeric value used to calculate the coefficient
+    @return  the newly calcluated coefficient
+    """
     return a*np.minimum((x+bias+1)**(-b), 1)
 
 def func_sin(x, a, b):
+    """! Function used apparently to generate a coefficient. Called by add_fluctuation.
+    @param x  an array of numeric data
+    @param a  a numeric value used to calculate the coefficient
+    @param b  a numeric value used to calculate the coefficient
+    @return  the newly calcluated coefficient
+    """
     return a*np.sin(2*np.pi*(x+b)/7)
 
 
 def lognorm_ave(x, a=4, b=0.568):
+    """! Function used to calculate the average of a log-normal distribution random variable.
+    @param x  an array of numeric data. The values themselves are not relevant, only the length of the array.
+    @param a  a numeric value used for calculation, by default 4
+    @param b  a numeric value used for calculation, by default 0.568
+    @return  the average of the lognormal random variable
+    """
     l = len(x)
-
     z = np.linspace(0,20,20)
     lognorm_pdf = np.asarray(lognorm.pdf(z/a, b))
     weights = lognorm_pdf[0:l]/lognorm_pdf[0:l].sum()
     weights = weights[::-1]
-
     return (x*weights).sum()
 
 
 
 def add_fluction(x, a=0.3, b=-0.5):
+    """! Function used to add fluctuation to a set of numeric data.
+    @param x  an array of numeric data. Function aims to generate a fluctuated version of this.
+    @param a  a numeric value used for calculation, by default 0.3
+    @param b  a numeric value used for calculation, by default -0.5
+    @return  an array of numeric data which has been fluctuated from the original x.
+    """
     x_inc = np.diff(x)
     num_weeks = int(len(x_inc)/7)
     data_output = [x[0]]
@@ -60,7 +107,12 @@ def add_fluction(x, a=0.3, b=-0.5):
 
 
 def write_val_to_json(params_allregion, write_file_name_all, write_file_name_best, limit=.5e-5):
-
+    """! Function used to write validation results into .json files.
+    @param params_allregion  array of validation data for each region validated
+    @param write_file_name_all  filename for the file where all data from params_allregion is written
+    @param write_file_name_best  filename for the file where the best row of data for each region is written
+    @param limit  a value used to increase the limit of validation loss which is still be considered 'good'
+    """
     dict_file = json.dumps(params_allregion)
     f = open(write_file_name_all,"w")
     f.write(dict_file)
@@ -104,15 +156,22 @@ def write_val_to_json(params_allregion, write_file_name_all, write_file_name_bes
 
 
 def state2fips(state):
+    """! Function used return the Federal Information Processing Standard code of the US state
+    @param state  the name of the region for which function is called.
+    @return  Either the FIPS of the state that variable state validly named, or "US" if not or if FIPS was not found.
+    """
     if not state == "US":
         return us.states.lookup(state).fips
     else:
         return "US"
 
 def get_state_list():
-    df_Population = pd.read_csv('us-data/us_population.csv')
-    df_Train = pd.read_csv('covid-19-data/us-states.csv')
-    df_Area = pd.read_csv('us-data/state-areas.csv')
+    """! Function used to get a list of US states. Function not called anywhere, and appears to reference things which do not exist.
+    @return  A list of states (presumably)
+    """
+    df_Population = pd.read_csv('us-data/us_population.csv') # US states
+    df_Train = pd.read_csv('covid-19-data/us-states.csv')    # What even is this file? Path does not exist. Original guys were smoking something alright.
+    df_Area = pd.read_csv('us-data/state-areas.csv')         # As above, does not exist. Guess they thought this can be left as is since function not called anywhere
     del_stat_list=[]
     train_countries = df_Train.state.unique().tolist()
     pop_countries =df_Population.STATE.unique().tolist()
@@ -124,8 +183,11 @@ def get_state_list():
     return state_list
 
 def get_ca_county_list():
-    df_ca_Population = pd.read_csv('ca-data/ca_population.csv')
-    file_name = 'covid-19-data/us-counties.csv'
+    """! Function used to get a list of the counties of California, USA. Function is not called anywhere, and appears to not work.
+    @return  A list of CA counties (presumably)
+    """
+    df_ca_Population = pd.read_csv('ca-data/ca_population.csv') # Does not exist
+    file_name = 'covid-19-data/us-counties.csv'                 # Does not exist
     df_Train = pd.read_csv(file_name)
     df_ca_pop_large = df_ca_Population[df_ca_Population["Population"]>1000000]
     df_ca_san_mateo = df_ca_Population[df_ca_Population["County"]=="San Mateo"]
@@ -154,8 +216,11 @@ def get_ca_county_list():
 #     return counties
 
 def get_county_list():
+    """! Function to get a list of all counties in USA.
+    @return  list of counties in USA
+    """
     non_county_list = ["Puerto Rico", "American Samoa", "Guam", "Northern Mariana Islands", "Virgin Islands"]
-    with open("data/county_pop.json", 'r') as f:
+    with open("data/county_pop.json", 'r') as f: # Appears to have all counties of all states
         County_Pop = json.load(f)
     county_list = []
     for region in County_Pop.keys():
@@ -166,6 +231,10 @@ def get_county_list():
     return county_list
 
 def get_start_date(data, limit=10):
+    """! Function to get the start date of the given dataset
+    @param data  the dataset of which the start date is wanted. Seems that when called in validation, data is confirmed cases.
+    @param limit  the value which is smaller than any wanted value from the data -dataset. Default is 10.
+    """
     ind = np.where(data[0]>limit)[0]
     if len(ind)==0:
         START_DATE = "2020-06-01"
@@ -175,6 +244,10 @@ def get_start_date(data, limit=10):
     return START_DATE
 
 def num2str(x):
+    """! Helper function to convert a number to a string.
+    @param x  a number which is to be converted to a string
+    @return  a string object of the original number
+    """
     x = str(x)
     if len(x)==4:
         x += "0"
@@ -187,11 +260,15 @@ def num2str(x):
 
 
 def plotting(pred_data, region):
+    """! Function presumably used for plotting the data that the model predicts. Not used anywhere in the code.
+    @param pred_data  presumably a dataset of data the model has predicted
+    @param region  presumably the name of the region for which prediction was made
+    """
     fig = plt.figure()
     ax=plt.plot(pred_data["upper_pre_confirm"],'r-')
     ax=plt.plot(pred_data["lower_pre_confirm"],'g-')
     ax=plt.plot(pred_data["pre_confirm"])
-    fig.savefig('figure_confirm/comfirm_'+region)
+    fig.savefig('figure_confirm/comfirm_'+region) # nice typo, confirms function is irrelevant?
     plt.close()
     fig = plt.figure()
     ax=plt.plot(pred_data["upper_pre_fata"],'r-')
