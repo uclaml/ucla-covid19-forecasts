@@ -254,12 +254,21 @@ class Hospital_US(Data):       # The url is invalid (17.02.2024), no way to know
     """
     def __init__(self, state): 
         """! Hospital_US class initializer. Creates pandas dataframe.
+        @param state  Name of the state for which data is wanted.
         """
-        url = 'https://covidtracking.com/api/v1/states/{}/daily.csv'.format(us.states.lookup(state).abbr.lower())
-        table = pd.read_csv(url)[['date', 'hospitalizedCurrently', 'inIcuCurrently']]
-        # Here we assume that once there is data, then the data is cumulative
+        #url = 'https://covidtracking.com/api/v1/states/{}/daily.csv'.format(us.states.lookup(state).abbr.lower())
+        #table = pd.read_csv(url)[['date', 'hospitalizedCurrently', 'inIcuCurrently']]
+        datafile = 'data/all-states-history.csv'
+        stateabbr = us.states.lookup(state).abbr #.lower() # in the ...daily.csv the API call gives, the abbreviation is apparently lowercase
+        table = pd.read_csv(datafile)[['state', 'date', 'hospitalizedCurrently', 'inIcuCurrently']]
         self.table = table[table.notnull().all(axis=1)]
-        # print(self.table)
+        #print(self.table)
+        statetable = table[table['state'] == stateabbr] # select only the state we want
+        #print(statetable)
+        statetable = statetable.drop(columns=['state']) # remove the 'state' column to maintain base-code dataframe format
+        # Here we assume that once there is data, then the data is cumulative   # (WTF does this mean? Cumulative of what? -Eetu)
+        self.table = statetable[table.notnull().all(axis=1)] # Make table only include rows where all values are not null. This is base code, from this I assume that in the .csv NaN does not mean 0
+        #print(self.table)
     
     def date_range(self):
         """! Get the first and last dates of available data in the dataset.
@@ -276,8 +285,8 @@ class Hospital_US(Data):       # The url is invalid (17.02.2024), no way to know
         """
         start = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
         end = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
-        dates = pd.to_datetime(self.table['date'], format='%Y%m%d').dt.date.to_numpy()
-        mask = (dates >= start) & (dates <= end)
+        dates = pd.to_datetime(self.table['date'], format='%Y-%m-%d').dt.date.to_numpy() # The format is %Y%m%d in the ....daily.csv the base code uses with the API call, 
+        mask = (dates >= start) & (dates <= end)                                         # but with the localized history csv, this format is used. Seems to work fine...
         masked = self.table[mask].sort_values(by='date')
         return masked['hospitalizedCurrently'].to_numpy(), masked['inIcuCurrently'].to_numpy()
         
