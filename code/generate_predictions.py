@@ -88,6 +88,11 @@ north_cal = ["Santa Clara", "San Mateo", "Alameda", "Contra Costa", "Sacramento"
 
 
 def get_county_list(cc_limit=200, pop_limit=50000):
+    """! Function to get a list of all counties based on specific criteria.
+    @param cc_limit Minimum number of confirmed cases for a county to be included.
+    @param pop_limit Minimum population required for inclusion.
+    """
+
     # List of US territories that are not included in counties.
     non_county_list = ["Puerto Rico", "American Samoa", "Guam", "Northern Mariana Islands", "Virgin Islands"]
 
@@ -112,7 +117,7 @@ def get_county_list(cc_limit=200, pop_limit=50000):
             # Add county to list if all of the following statements are true.
                 # There have been deaths on more than one day.
                 # There are more deaths than five.
-                # There are more deaths than the cc_limit given to the function.
+                # There are more confirmed cases than the cc_limit given to the function.
                 # Start date of data is earlier than 2020-05-01.
             if len(death) >0 and np.max(death)>5 and np.max(confirm)>cc_limit and start_date < "2020-05-01":
                 county_list += [region]
