@@ -91,6 +91,7 @@ def get_county_list(cc_limit=200, pop_limit=50000):
     """! Function to get a list of all counties based on specific criteria.
     @param cc_limit Minimum number of confirmed cases for a county to be included.
     @param pop_limit Minimum population required for inclusion.
+    @return A list of county/state combinations that meet the criteria (format: County_State).
     """
 
     # List of US territories that are not included in counties.
