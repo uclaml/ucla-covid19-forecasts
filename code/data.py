@@ -56,6 +56,10 @@ class NYTimes(Data):
         #url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-' + level + '.csv'
         url = 'data/nytimes_us-' + level + '.csv' # .csv files localized to ../code/data from the nytimes github
         self.table = pd.read_csv(url).drop('fips', axis=1)
+                
+        if level == 'counties':                 # Apparently the massive counties csv has null values, which causes the following assert to fail
+            self.table = self.table.dropna()    # I have no idea if dropping those messes up the model, but it's either doing this or abadoning the NYTimes counties functionality...
+            
         assert not self.table.isnull().values.any(), 'We do not handle nan cases in NYTimes'
         self.level = level
         self.state_list = self.table["state"].unique()
